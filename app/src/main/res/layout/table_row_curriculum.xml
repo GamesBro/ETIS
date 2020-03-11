@@ -1,0 +1,36 @@
+<TableRow
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Введение в информационные технологии и системы" />
+
+    <TextView
+        android:id="@+id/reportType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Зачет" />
+
+    <TextView
+        android:id="@+id/workLaboratory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="36" />
+
+    <TextView
+        android:id="@+id/selfStudy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="42" />
+
+    <TextView
+        android:id="@+id/all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="108" />
+</TableRow>

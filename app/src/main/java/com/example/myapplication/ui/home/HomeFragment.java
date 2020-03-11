@@ -3,6 +3,7 @@ package com.example.myapplication.ui.home;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
@@ -31,6 +33,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     View root;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("StaticFieldLeak")
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -42,6 +45,7 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });*/
+
 
         new AsyncTask<Void, Void, String>()
         {
@@ -55,7 +59,8 @@ public class HomeFragment extends Fragment {
 
                 if(prefs.contains("session_id")) {
                     my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getTimeTable();
+                    title = my.getTimeTable(true, 28);
+                    //return null;
                 }
                 else
                     my = new apiEtis();
@@ -67,7 +72,7 @@ public class HomeFragment extends Fragment {
                         editor.putString("session_id", session_id);
                         editor.apply();
 
-                        title = my.getTimeTable();
+                        title = my.getTimeTable(true, 28);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -82,42 +87,48 @@ public class HomeFragment extends Fragment {
                     Document doc = Jsoup.parse(title);
                     Elements days = doc.getElementsByClass("day");
 
-                    //Сначала найдем в разметке активити саму таблицу по идентификатору
                     TableLayout tableLayout = root.findViewById(R.id.table);
                     LayoutInflater inflater = getActivity().getLayoutInflater();
 
                     for (Element day : days) {
-                        TableRow tr = (TableRow) inflater.inflate(R.layout.title_schedule_table_row, null);
+                        TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_schedule_title, null);
                         TextView tv1 = tr.findViewById(R.id.title);
                         tv1.setText(day.getElementsByTag("h3").text());
                         tableLayout.addView(tr);
 
                         Elements table = day.getElementsByTag("tr");
                         if (table.isEmpty()) {
-                            //System.out.println("No pairs");
+                            tr = (TableRow) inflater.inflate(R.layout.table_row_schedule_title, null);
+                            tv1 = tr.findViewById(R.id.title);
+                            tv1.setText("Пар нет!");
+                            tableLayout.addView(tr);
                         } else {
                             for (Element row : table) {
+                                TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_schedule, null);
+                                TextView tv12 = tr2.findViewById(R.id.pair);
+                                tv12.setText(row.getElementsByClass("pair_num").first().ownText());
+
+                                tv12 = tr2.findViewById(R.id.time);
+                                tv12.setText(row.getElementsByClass("eval").first().text());
+
                                 if(row.getElementsByClass("pair_info").get(0).childrenSize() > 0) {
-                                    TableRow tr2 = (TableRow) inflater.inflate(R.layout.schedule_table_row, null);
-                                    TextView tv12 = tr2.findViewById(R.id.title);
+                                    tv12 = tr2.findViewById(R.id.title);
                                     tv12.setText(row.getElementsByClass("dis").first().text());
-
-                                    tv12 = tr2.findViewById(R.id.pair);
-                                    tv12.setText(row.getElementsByClass("pair_num").first().ownText());
-
-                                    tv12 = tr2.findViewById(R.id.time);
-                                    tv12.setText(row.getElementsByClass("eval").first().text());
 
                                     tv12 = tr2.findViewById(R.id.teacher);
                                     tv12.setText(row.getElementsByClass("teacher").get(0).getElementsByTag("a").get(0).text());
 
                                     tv12 = tr2.findViewById(R.id.classroom);
                                     tv12.setText(row.getElementsByClass("aud").get(0).text());
-                                    tableLayout.addView(tr2);
                                 }
+
+                                tableLayout.addView(tr2);
                             }
                         }
                     }
+                }
+                else {
+                    System.out.println("Err load");
                 }
             }
 
@@ -125,5 +136,4 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
-
 }

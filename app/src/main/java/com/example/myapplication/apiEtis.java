@@ -18,10 +18,10 @@ public class apiEtis{
       this.session_id = session_id;
    }
 
-   public String getTimeTable() {
+   public String getTimeTable(boolean cons, int week) {
       try {
          System.out.println(session_id);
-         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.timetable");
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+week);
          HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
          connection.setRequestProperty("Cookie", session_id);
 
@@ -32,6 +32,68 @@ public class apiEtis{
          e.printStackTrace();
       }
 
+      return null;
+   }
+
+   public String getRatingCurrent(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.signs?p_mode=current");
+         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if (connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      return null;
+   }
+
+   public String getRatingSession(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.signs?p_mode=session");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK){
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      return null;
+   }
+
+   public String getRatingDiplom(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.signs?p_mode=diplom");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK){
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return null;
+   }
+
+   public String getCurriculumShort(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.teach_plan?p_mode=short");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK){
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
       return null;
    }
 

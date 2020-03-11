@@ -1,10 +1,17 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="title_home">Расписание</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_dashboard">Оценки</string>
+    <string name="title_notifications">Учебный план</string>
+    <string name="title_menu">Меню</string>
 
     <string name="title_activity_auth">Auth</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string-array name="assessments">
+        <item>За сессии</item>
+        <item>В триместре</item>
+        <item>В диплом</item>
+    </string-array>
 </resources>
