@@ -1,5 +1,10 @@
 package com.example.myapplication;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,7 +26,7 @@ public class apiEtis{
    public String getTimeTable(boolean cons, int week) {
       try {
          System.out.println(session_id);
-         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+week);
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+ week);
          HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
          connection.setRequestProperty("Cookie", session_id);
 
@@ -97,6 +102,92 @@ public class apiEtis{
       return null;
    }
 
+   public String getAbsence(int p_term) throws IOException {
+      URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.absence?p_term="+p_term);
+      HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+      connection.setRequestProperty("Cookie", session_id);
+
+      if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+         return readStream(connection.getInputStream());
+      }
+      return null;
+   }
+
+   public String getOrders(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.orders");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return null;
+   }
+
+   public String getAnnounce(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.announce");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return null;
+   }
+
+    public String getElectricRes(){
+        try {
+            URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.electr");
+            HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+            connection.setRequestProperty("Cookie", session_id);
+
+            if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+                return readStream(connection.getInputStream());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+   public String getEducationalStandard(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.electr");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return null;
+   }
+
+   public String getTeachers(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.teachers");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            return readStream(connection.getInputStream());
+         }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return null;
+   }
+
    public String auth(String login, String password) throws IOException {
         /*
             https://student.psu.ru/pls/stu_cus_et/stu.login
@@ -150,9 +241,9 @@ public class apiEtis{
       StringBuffer response = new StringBuffer();
       try {
          reader = new BufferedReader(new InputStreamReader(in, "windows-1251"));
-         String line = "";
+         String line;
          while ((line = reader.readLine()) != null) {
-            response.append(line);
+            response.append(line).append("\n");
          }
       } catch (IOException e) {
          e.printStackTrace();

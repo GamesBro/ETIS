@@ -1,20 +1,19 @@
-package com.example.myapplication.ui.home;
+package com.example.myapplication.ui.schedule;
+
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
@@ -28,24 +27,25 @@ import java.io.IOException;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class HomeFragment extends Fragment {
+public class WeeklyScheduleFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
-    View root;
+    private View root;
+    private int number;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    WeeklyScheduleFragment(int number) {
+        this.number = number;
+    }
+
+    private int pxFromDp(int dp) {
+        return (int)(dp * getContext().getResources().getDisplayMetrics().density);
+    }
+
     @SuppressLint("StaticFieldLeak")
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        root = inflater.inflate(R.layout.fragment_home, container, false);
-        /*final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
+        root = inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
 
         new AsyncTask<Void, Void, String>()
         {
@@ -59,8 +59,8 @@ public class HomeFragment extends Fragment {
 
                 if(prefs.contains("session_id")) {
                     my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getTimeTable(true, 28);
-                    //return null;
+                    title = my.getTimeTable(true, number);
+                    return null;
                 }
                 else
                     my = new apiEtis();
@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
                         editor.putString("session_id", session_id);
                         editor.apply();
 
-                        title = my.getTimeTable(true, 28);
+                        title = my.getTimeTable(true, number);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -83,7 +83,10 @@ public class HomeFragment extends Fragment {
 
             protected void onPostExecute(String result)
             {
-                if(title != null){
+                System.out.println(
+                        title.length()
+                );
+                if(title != null && title.length()>0){
                     Document doc = Jsoup.parse(title);
                     Elements days = doc.getElementsByClass("day");
 
@@ -103,6 +106,7 @@ public class HomeFragment extends Fragment {
                             tv1.setText("Пар нет!");
                             tableLayout.addView(tr);
                         } else {
+                            boolean first = true;
                             for (Element row : table) {
                                 TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_schedule, null);
                                 TextView tv12 = tr2.findViewById(R.id.pair);
@@ -122,7 +126,11 @@ public class HomeFragment extends Fragment {
                                     tv12.setText(row.getElementsByClass("aud").get(0).text());
                                 }
 
-                                tableLayout.addView(tr2);
+                                TableLayout.LayoutParams params = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+                                int px = pxFromDp(1);
+                                params.setMargins(px,first ? px : 0,px,px);
+                                tableLayout.addView(tr2, params);
+                                first = false;
                             }
                         }
                     }
@@ -136,4 +144,5 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
+
 }

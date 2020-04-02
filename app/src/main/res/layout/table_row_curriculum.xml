@@ -5,32 +5,46 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@android:color/white"
+        android:layout_margin="0.5dp"
         android:text="Введение в информационные технологии и системы" />
 
     <TextView
         android:id="@+id/reportType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:background="@android:color/white"
+        android:gravity="center"
         android:text="Зачет" />
 
     <TextView
         android:id="@+id/workLaboratory"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:layout_margin="0.5dp"
+        android:gravity="center"
         android:text="36" />
 
     <TextView
         android:id="@+id/selfStudy"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:layout_margin="0.5dp"
+        android:gravity="center"
         android:text="42" />
 
     <TextView
         android:id="@+id/all"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:layout_margin="0.5dp"
+        android:gravity="center"
         android:text="108" />
 </TableRow>

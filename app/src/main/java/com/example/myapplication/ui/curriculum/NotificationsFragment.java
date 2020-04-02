@@ -1,22 +1,18 @@
-package com.example.myapplication.ui.notifications;
+package com.example.myapplication.ui.curriculum;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.R;
@@ -41,7 +37,7 @@ public class NotificationsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        root = inflater.inflate(R.layout.fragment_notifications, container, false);
+        root = inflater.inflate(R.layout.fragment_curriculum, container, false);
         /*final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -98,7 +94,7 @@ public class NotificationsFragment extends Fragment {
 
                     for(int i=0; i < Headers.size(); i++){
 
-                        TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_schedule_title, null);
+                        TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_curriculum_title, null);
                         TextView tv1 = tr.findViewById(R.id.title);
                         tv1.setText(Headers.get(i).text());
                         tableLayout.addView(tr);

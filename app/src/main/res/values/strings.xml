@@ -4,6 +4,12 @@
     <string name="title_dashboard">Оценки</string>
     <string name="title_notifications">Учебный план</string>
     <string name="title_menu">Меню</string>
+    <string name="title_teachers">Преподаватели</string>
+    <string name="title_missed_classes">Пропущенные занятия</string>
+    <string name="title_orders">Приказы</string>
+    <string name="title_library">Библиотека</string>
+    <string name="title_electronic_res">Электронные ресурсы</string>
+    <string name="title_ads">Объявления</string>
 
     <string name="title_activity_auth">Auth</string>
     <string name="dummy_button">Dummy Button</string>
@@ -14,4 +20,18 @@
         <item>В триместре</item>
         <item>В диплом</item>
     </string-array>
+
+    <string-array name="menu">
+        <item>Преподаватели</item>
+        <item>Пропущенные занятия</item>
+        <item>Приказы</item>
+        <item>Библиотека</item>
+        <item>Электронные ресурсы</item>
+        <item>Объявления</item>
+        <item>Образовательный стандарт</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="с">200dp</string>
 </resources>
