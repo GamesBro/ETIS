@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -102,16 +103,79 @@ public class apiEtis{
       return null;
    }
 
-   public String getAbsence(int p_term) throws IOException {
-      URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.absence?p_term="+p_term);
+   //-----
+
+   public class absence{
+      final public int n;
+      final public String[] dates;
+      final public String discipline;
+      final public String typeWork;
+      final public String lecturer;
+
+      public absence(int n, String[] dates, String discipline, String typeWork, String lecturer){
+         this.n = n;
+         this.dates = dates;
+         this.discipline = discipline;
+         this.typeWork = typeWork;
+         this.lecturer = lecturer;
+      }
+   }
+
+   public class MissedClasses {
+      final public String title;
+      final public ArrayList<absence> absences;
+
+      public MissedClasses(String title, ArrayList<absence> absences) {
+         this.title = title;
+         this.absences = absences;
+      }
+   }
+
+   public String getPage(String strUrl) throws IOException {
+      URL url = new URL(strUrl);
       HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
       connection.setRequestProperty("Cookie", session_id);
 
-      if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+      if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK)
          return readStream(connection.getInputStream());
+      return null;
+   }
+
+   public ArrayList<absence> getAbsence(int p_term) throws IOException {
+      String server_response = getPage("https://student.psu.ru/pls/stu_cus_et/stu.absence?p_term="+p_term);
+      if(server_response != null) {
+         Document doc = Jsoup.parse(server_response);
+         Elements tables = doc.getElementsByClass("slimtab_nice").get(0).getElementsByTag("tr");
+
+         ArrayList<absence> list = new ArrayList<>();
+         for (Element row : tables) {
+            Elements els = row.getElementsByTag("td");
+            if (els.size() == 5) {
+               list.add(
+                       new absence(
+                               Integer.parseInt(els.get(0).text()),
+                               els.get(1).text().split(" "),
+                               els.get(2).text(),
+                               els.get(3).text(),
+                               els.get(4).text()
+                       )
+               );
+            }
+         }
+         return list;
       }
       return null;
    }
+
+   public ArrayList<MissedClasses> getMissedClasses() throws IOException {
+      String[] p = new String[] {"осенний триместр", "весенний триместр", "летний триместр"};
+      ArrayList<MissedClasses> temp = new ArrayList<>();
+      for(int i=0; i < p.length; i++)
+         temp.add(new MissedClasses(p[i], getAbsence(i+1)));
+      return temp;
+   }
+
+   //---
 
    public String getOrders(){
       try {

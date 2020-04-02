@@ -27,6 +27,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -56,19 +57,21 @@ public class MissedClassesFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_missed_classes, container, false);
 
-        new AsyncTask<Void, Void, String>()
+        new AsyncTask<Void, Void, ArrayList<apiEtis.MissedClasses>>()
         {
-            String title;
-
             @Override
-            protected String doInBackground(Void... params)
+            protected ArrayList<apiEtis.MissedClasses> doInBackground(Void... params)
             {
                 apiEtis my;
                 SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
 
                 if(prefs.contains("session_id")) {
                     my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getRatingSession();
+                    try {
+                        return my.getMissedClasses();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     //return null;
                 }
                 else
@@ -81,7 +84,7 @@ public class MissedClassesFragment extends Fragment {
                         editor.putString("session_id", session_id);
                         editor.apply();
 
-                        title = my.getAbsence(1);
+                        return my.getMissedClasses();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -91,35 +94,34 @@ public class MissedClassesFragment extends Fragment {
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
-            protected void onPostExecute(String result)
+            protected void onPostExecute(ArrayList<apiEtis.MissedClasses> result)
             {
-                if(title != null){
-
-                    Document doc = Jsoup.parse(title);
-                    Elements tables = doc.getElementsByClass("slimtab_nice").get(0).getElementsByTag("tr");
-
+                if(result != null){
                     //Сначала найдем в разметке активити саму таблицу по идентификатору
                     TableLayout tableLayout = root.findViewById(R.id.tableMissedLessons);
                     LayoutInflater inflater = getActivity().getLayoutInflater();
 
-                    for (Element row : tables){
-                        Elements els = row.getElementsByTag("td");
-                        if(els.size() == 5){
+                    for(apiEtis.MissedClasses tt : result){
+                        TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_missed_classes_title, null);
+                        TextView tv2 = tr2.findViewById(R.id.title);
+                        tv2.setText(tt.title);
+                        tableLayout.addView(tr2);
+
+                        for(apiEtis.absence ttt : tt.absences){
                             TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_missed_classes, null);
                             TextView tv = tr.findViewById(R.id.num);
-                            tv.setText(els.get(0).text());
+                            tv.setText(Integer.toString(ttt.n));
 
                             tv = tr.findViewById(R.id.date);
-                            tv.setText(els.get(1).text().replace(" ", "\n"));
+                            tv.setText(String.join("\n", ttt.dates));
 
                             tv = tr.findViewById(R.id.discipline);
-                            tv.setText(els.get(2).text());
+                            tv.setText(ttt.discipline);
 
                             //tv = tr.findViewById(R.id.typeWork);
-                            //tv.setText(els.get(3).text());
 
                             tv = tr.findViewById(R.id.lecturer);
-                            tv.setText(normalize(els.get(4).text()));
+                            tv.setText(normalize(ttt.lecturer));
 
                             tableLayout.addView(tr);
                         }
