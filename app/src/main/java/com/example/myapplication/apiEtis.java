@@ -131,16 +131,6 @@ public class apiEtis{
       }
    }
 
-   public String getPage(String strUrl) throws IOException {
-      URL url = new URL(strUrl);
-      HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
-      connection.setRequestProperty("Cookie", session_id);
-
-      if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK)
-         return readStream(connection.getInputStream());
-      return null;
-   }
-
    public ArrayList<absence> getAbsence(int p_term) throws IOException {
       String server_response = getPage("https://student.psu.ru/pls/stu_cus_et/stu.absence?p_term="+p_term);
       if(server_response != null) {
@@ -201,6 +191,15 @@ public class apiEtis{
          if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
             return readStream(connection.getInputStream());
          }
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      return null;
+   }
+
+   public String getTeacherMessages(){
+      try {
+         return getPage("https://student.psu.ru/pls/stu_cus_et/stu.teacher_notes");
       } catch (IOException e) {
          e.printStackTrace();
       }
@@ -298,6 +297,16 @@ public class apiEtis{
          this.session_id = SetCookie.split(";")[0];
 
       return this.session_id;
+   }
+
+   public String getPage(String strUrl) throws IOException {
+      URL url = new URL(strUrl);
+      HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+      connection.setRequestProperty("Cookie", session_id);
+
+      if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK)
+         return readStream(connection.getInputStream());
+      return null;
    }
 
    private static String readStream(InputStream in) {

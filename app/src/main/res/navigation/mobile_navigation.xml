@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_navigation_menu_to_electronicResourcesFragment"
             app:destination="@id/electronicResourcesFragment" />
+        <action
+            android:id="@+id/action_navigation_menu_to_teachersMessagesFragment"
+            app:destination="@id/teachersMessagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/teachersFragment"
@@ -78,5 +81,10 @@
         android:name="com.example.myapplication.ui.menu.Fragments.ElectronicResourcesFragment"
         android:label="fragment_electronic_resources"
         tools:layout="@layout/fragment_electronic_resources" />
+    <fragment
+        android:id="@+id/teachersMessagesFragment"
+        android:name="com.example.myapplication.ui.menu.Fragments.TeachersMessagesFragment"
+        android:label="fragment_teachers_messages"
+        tools:layout="@layout/fragment_teachers_messages" />
 
 </navigation>

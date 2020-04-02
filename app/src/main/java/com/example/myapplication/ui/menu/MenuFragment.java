@@ -33,20 +33,16 @@ public class MenuFragment extends Fragment implements MyRecyclerViewAdapter.Item
         return new MenuFragment();
     }
 
-    MyRecyclerViewAdapter adapter;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        Resources res = getResources();
-        String[] sk_verb_array = res.getStringArray(R.array.menu); // Получаем массив из ресурсов
-
         // set up the RecyclerView
         RecyclerView recyclerView = root.findViewById(R.id.test);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MyRecyclerViewAdapter(getContext(), Arrays.asList(sk_verb_array));
+        String[] sk_verb_array = getResources().getStringArray(R.array.menu); // Получаем массив из ресурсов
+        MyRecyclerViewAdapter adapter = new MyRecyclerViewAdapter(getContext(), Arrays.asList(sk_verb_array));
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
@@ -61,18 +57,21 @@ public class MenuFragment extends Fragment implements MyRecyclerViewAdapter.Item
                 now.navigate(R.id.teachersFragment, null);
                 break;
             case 1:
-                now.navigate(R.id.missedClassesFragment, null);
+                now.navigate(R.id.teachersMessagesFragment, null);
                 break;
             case 2:
-                now.navigate(R.id.ordersFragment, null);
+                now.navigate(R.id.missedClassesFragment, null);
                 break;
             case 3:
-                now.navigate(R.id.libraryFragment, null);
+                now.navigate(R.id.ordersFragment, null);
                 break;
             case 4:
-                now.navigate(R.id.electronicResourcesFragment, null);
+                now.navigate(R.id.libraryFragment, null);
                 break;
             case 5:
+                now.navigate(R.id.electronicResourcesFragment, null);
+                break;
+            case 6:
                 now.navigate(R.id.adsFragment, null);
                 break;
         }
