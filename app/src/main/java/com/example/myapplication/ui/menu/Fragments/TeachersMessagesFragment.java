@@ -95,7 +95,7 @@ public class TeachersMessagesFragment extends Fragment {
 
                         CharSequence text = textView.getText();
                         if (text instanceof Spannable)
-                            textView.setText(MakeLinksClicable.reformatText(text));
+                            textView.setText((new MakeLinksClicable()).reformatText(text));
 
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         params.setMargins(0, 10, 0, 10);

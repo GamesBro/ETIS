@@ -99,7 +99,7 @@ public class ElectronicResourcesFragment extends Fragment {
                             tv.setMovementMethod(LinkMovementMethod.getInstance());
                             CharSequence text = tv.getText();
                             if (text instanceof Spannable)
-                                tv.setText(MakeLinksClicable.reformatText(text));
+                                tv.setText((new MakeLinksClicable()).reformatText(text));
 
                             tv = tr.findViewById(R.id.login);
                             tv.setText(els.get(1).text());

@@ -11,14 +11,23 @@ import android.view.View;
 public class MakeLinksClicable
 {
     private static final String LOG = MakeLinksClicable.class.getSimpleName();
+    private static String def;
 
-    public static class CustomerTextClick extends ClickableSpan
+    public MakeLinksClicable(){}
+
+    public MakeLinksClicable(String def){
+        this.def = def;
+    }
+
+    public class CustomerTextClick extends ClickableSpan
     {
         String mUrl;
 
         public CustomerTextClick(String url)
         {
-            mUrl = url;
+            if(!url.matches("^((https?)\\:\\/\\/)?([a-z0-9]{1})((\\.[a-z0-9-])|([a-z0-9-]))*\\.([a-z]{2,6})(\\/?)$"))
+                mUrl = def;
+            mUrl += url;
         }
 
         @Override
@@ -34,7 +43,7 @@ public class MakeLinksClicable
         }
     }
 
-    public static SpannableStringBuilder reformatText(CharSequence text)
+    public SpannableStringBuilder reformatText(CharSequence text)
     {
         int end = text.length();
         Spannable sp = (Spannable) text;

@@ -98,7 +98,7 @@ public class OrdersFragment extends Fragment {
                         tv.setMovementMethod(LinkMovementMethod.getInstance());
                         CharSequence text = tv.getText();
                         if (text instanceof Spannable)
-                            tv.setText(MakeLinksClicable.reformatText(text));
+                            tv.setText((new MakeLinksClicable()).reformatText(text));
                         Layout.addView(tv);
                     }
                 }

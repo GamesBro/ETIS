@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -234,20 +235,24 @@ public class apiEtis{
       return null;
    }
 
-   public String getAnnounce(){
-      try {
-         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.announce");
-         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
-         connection.setRequestProperty("Cookie", session_id);
-
-         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-            return readStream(connection.getInputStream());
+   public ArrayList<String> getAnnounce() throws IOException{
+      ArrayList<String> res = new ArrayList<>();
+      String server_response = getPage("https://student.psu.ru/pls/stu_cus_et/stu.announce");
+      if(server_response != null) {
+         Document doc = Jsoup.parse(server_response);
+         Elements messages = doc.getElementsByClass("msg");
+         for(Element msg : messages){
+            StringBuilder temp = new StringBuilder();
+            for(Element li : msg.getElementsByTag("li"))
+               temp.append(temp.length() > 0 ? "<br>" : "").append(li.html());
+            // delete hyphens at the end
+            res.add(Pattern.compile("[(?:<br>)\\s]+$").matcher(temp.toString()).replaceAll(""));
          }
-      } catch (IOException e) {
-         e.printStackTrace();
       }
-      return null;
+      return res;
    }
+
+   //-----------------
 
    public String getTeacherMessages(){
       try {
@@ -258,7 +263,7 @@ public class apiEtis{
       return null;
    }
 
-    public String getElectricRes(){
+   public String getElectricRes(){
         try {
             URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.electr");
             HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
