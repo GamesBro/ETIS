@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.grades;
+package com.example.myapplication.ui.grades.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;

@@ -103,7 +103,7 @@ public class apiEtis{
       return null;
    }
 
-   //-----
+   //----------------
 
    public class absence{
       final public int n;
@@ -165,7 +165,59 @@ public class apiEtis{
       return temp;
    }
 
-   //---
+   //----------------
+
+   public static class Rating{
+      public final String title;
+      public final RatingRow[] rows;
+
+      Rating(String title, RatingRow[] rows) {
+         this.title = title;
+         this.rows = rows;
+      }
+
+      public static class RatingRow{
+         public final String combination;
+         public final String ranking;
+
+         RatingRow(String combination, String ranking) {
+            this.combination = combination;
+            this.ranking = ranking;
+         }
+      }
+   }
+
+   public ArrayList<Rating> getRating() throws IOException{
+      ArrayList<Rating> res = new ArrayList<>();
+      String server_response = getPage("https://student.psu.ru/pls/stu_cus_et/stu.signs?p_mode=rating");
+      if(server_response != null) {
+         Document doc = Jsoup.parse(server_response);
+         Elements item = doc.getElementsByClass("submenu").get(1).getElementsByClass("submenu-item");
+         for(int i=item.size()-1; i >= 0; i--){
+            Element doc2 = null;
+
+            if(item.get(i).childrenSize() == 1){
+               String server_response2 = getPage("https://student.psu.ru/pls/stu_cus_et/"+item.get(i).child(0).attr("href"));
+               if(server_response2 != null)
+                  doc2 = Jsoup.parse(server_response2).getElementsByClass("common").get(0);
+            }
+            else{
+               doc2 = doc.getElementsByClass("common").get(0);
+            }
+
+            Elements tr = doc2.getElementsByTag("tr");
+            Rating.RatingRow[] rr = new Rating.RatingRow[2];
+            for(int j = 0; j < 2 ; j++){
+               Elements td = tr.get(j+1).getElementsByTag("td");
+               rr[j] = new Rating.RatingRow(td.get(0).text(), td.get(1).text());
+            }
+            res.add(new Rating(item.get(i).text(), rr));
+         }
+      }
+      return res;
+   }
+
+   //----------------
 
    public String getOrders(){
       try {

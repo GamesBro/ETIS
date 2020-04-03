@@ -13,9 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.myapplication.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.example.myapplication.ui.grades.DashboardFragment"
+        android:label="@string/title_grades"
+        tools:layout="@layout/fragment_grades" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_ratingFragment"
+            app:destination="@id/ratingFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -86,5 +90,10 @@
         android:name="com.example.myapplication.ui.menu.Fragments.TeachersMessagesFragment"
         android:label="fragment_teachers_messages"
         tools:layout="@layout/fragment_teachers_messages" />
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.example.myapplication.ui.grades.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating" />
 
 </navigation>

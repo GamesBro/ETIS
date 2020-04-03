@@ -3,8 +3,10 @@ package com.example.myapplication.ui.grades;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -17,16 +19,17 @@ import android.widget.TextView;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
+import static org.jsoup.internal.Normalizer.normalize;
 
-public class FragmentSession extends Fragment {
+public class RatingFragment extends Fragment {
+
+    public RatingFragment() {
+        // Required empty public constructor
+    }
 
     View root;
 
@@ -34,21 +37,23 @@ public class FragmentSession extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_session, container, false);
+        root = inflater.inflate(R.layout.fragment_rating, container, false);
 
-        new AsyncTask<Void, Void, String>()
+        new AsyncTask<Void, Void, ArrayList<apiEtis.Rating>>()
         {
-            String title;
-
             @Override
-            protected String doInBackground(Void... params)
+            protected ArrayList<apiEtis.Rating> doInBackground(Void... params)
             {
                 apiEtis my;
                 SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
 
                 if(prefs.contains("session_id")) {
                     my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getRatingSession();
+                    try {
+                        return my.getRating();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     //return null;
                 }
                 else
@@ -61,7 +66,7 @@ public class FragmentSession extends Fragment {
                         editor.putString("session_id", session_id);
                         editor.apply();
 
-                        title = my.getRatingSession();
+                        return my.getRating();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -70,37 +75,30 @@ public class FragmentSession extends Fragment {
                 return null;
             }
 
-            protected void onPostExecute(String result)
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            protected void onPostExecute(ArrayList<apiEtis.Rating> result)
             {
-                if(title != null){
-                    Document doc = Jsoup.parse(title);
-                    Elements rows = doc.getElementsByClass("common").get(0).getElementsByTag("tr");
-
+                if(result != null){
                     //Сначала найдем в разметке активити саму таблицу по идентификатору
-                    TableLayout tableLayout = root.findViewById(R.id.tableSession);
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    TableLayout tableLayout = root.findViewById(R.id.tableRating);
 
-                    for(Element row: rows){
-                        Elements ls = row.children();
-                        if(ls.size() == 1){
-                            TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_session_title, null);
-                            TextView tv1 = tr.findViewById(R.id.title);
-                            tv1.setText(ls.text());
-                            tableLayout.addView(tr);
-                        }
-                        else if(ls.size() == 4){
-                            TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_session, null);
-                            TextView tv12 = tr2.findViewById(R.id.title);
-                            tv12.setText(ls.get(0).text());
+                    for(apiEtis.Rating r : result){
+                        TableRow tr2 = new TableRow(getContext());
+                        TextView tv2 = new TextView(getContext());
+                        tv2.setText(r.title);
+                        tr2.addView(tv2);
+                        tableLayout.addView(tr2);
 
-                            tv12 = tr2.findViewById(R.id.mark);
-                            tv12.setText(ls.get(1).text());
+                        for(apiEtis.Rating.RatingRow rr : r.rows){
+                            tr2 = new TableRow(getContext());
 
-                            tv12 = tr2.findViewById(R.id.date);
-                            tv12.setText(ls.get(2).text());
+                            tv2 = new TextView(getContext());
+                            tv2.setText(rr.combination);
+                            tr2.addView(tv2);
 
-                            tv12 = tr2.findViewById(R.id.lecturer);
-                            tv12.setText(ls.get(3).text());
+                            tv2 = new TextView(getContext());
+                            tv2.setText(rr.ranking);
+                            tr2.addView(tv2);
 
                             tableLayout.addView(tr2);
                         }
@@ -112,8 +110,6 @@ public class FragmentSession extends Fragment {
             }
 
         }.execute();
-
         return root;
     }
-
 }
