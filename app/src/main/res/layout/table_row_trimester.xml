@@ -1,38 +1,80 @@
 <TableRow
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:measureWithLargestChild="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_weight="1"
-        android:text="Контрольная работа по теории нормализации" />
+
+        android:background="@android:color/white"
+        android:layout_margin="0.5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:text="Тема" />
 
     <TextView
-        android:id="@+id/type"
+        android:id="@+id/typeWork"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:background="@android:color/white"
+        android:gravity="center_horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:text="Вид\nработы" />
+
+    <TextView
+        android:id="@+id/typeControl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_margin="0.5dp"
+        android:background="@android:color/white"
         android:gravity="center_horizontal"
-        android:text="входное тестирование (лек)" />
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:text="Вид\nконтроля" />
 
     <TextView
         android:id="@+id/min"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Проход" />
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:gravity="center_horizontal"
+        android:background="@android:color/white"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:text="Проход." />
 
     <TextView
         android:id="@+id/now"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:gravity="center_horizontal"
+        android:background="@android:color/white"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:text="текущий" />
 
     <TextView
         android:id="@+id/max"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="макс" />
+        android:layout_height="match_parent"
+        android:layout_margin="0.5dp"
+        android:gravity="center_horizontal"
+        android:background="@android:color/white"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:text="макс." />
+
 </TableRow>

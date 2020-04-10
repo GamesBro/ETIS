@@ -88,21 +88,24 @@ public class FragmentSession extends Fragment {
                             tv1.setText(ls.text());
                             tableLayout.addView(tr);
                         }
-                        else if(ls.size() == 4){
-                            TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_session, null);
-                            TextView tv12 = tr2.findViewById(R.id.title);
-                            tv12.setText(ls.get(0).text());
+                        else{
+                            ls = row.getElementsByTag("td");
+                            if(ls.size() == 4){
+                                TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_session, null);
+                                TextView tv12 = tr2.findViewById(R.id.title);
+                                tv12.setText(ls.get(0).text());
 
-                            tv12 = tr2.findViewById(R.id.mark);
-                            tv12.setText(ls.get(1).text());
+                                tv12 = tr2.findViewById(R.id.mark);
+                                tv12.setText(ls.get(1).text());
 
-                            tv12 = tr2.findViewById(R.id.date);
-                            tv12.setText(ls.get(2).text());
+                                tv12 = tr2.findViewById(R.id.date);
+                                tv12.setText(ls.get(2).text());
 
-                            tv12 = tr2.findViewById(R.id.lecturer);
-                            tv12.setText(ls.get(3).text());
+                                tv12 = tr2.findViewById(R.id.lecturer);
+                                tv12.setText(ls.get(3).text());
 
-                            tableLayout.addView(tr2);
+                                tableLayout.addView(tr2);
+                            }
                         }
                     }
                 }

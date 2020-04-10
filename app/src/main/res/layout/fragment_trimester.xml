@@ -8,10 +8,84 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
         <TableLayout
             android:id="@+id/tableTrimester"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="#DDE1E5">
+            <!--android:stretchColumns="0"-->
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0.5dp"
+                    android:layout_weight="1"
+                    android:background="#EDF1F5"
+                    android:gravity="center"
+                    android:text="Тема" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.5dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="2dp"
+                    android:text="Вид\nработы" />
+
+                <TextView
+                    android:id="@+id/type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.5dp"
+                    android:background="#EDF1F5"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="5dp"
+                    android:paddingBottom="2dp"
+                    android:text="Вид\nконтроля" />
+
+                <TextView
+                    android:id="@+id/min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0.5dp"
+                    android:background="#EDF1F5"
+                    android:text="проход."
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0.5dp"
+                    android:background="#EDF1F5"
+                    android:text="оценка"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0.5dp"
+                    android:background="#EDF1F5"
+                    android:text=" макс. "
+                    android:textSize="12sp" />
+
+            </TableRow>
+
+        </TableLayout>
     </ScrollView>
 
 </FrameLayout>
