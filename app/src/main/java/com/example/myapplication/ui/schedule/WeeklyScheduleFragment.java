@@ -24,6 +24,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -47,20 +48,21 @@ public class WeeklyScheduleFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
 
-        new AsyncTask<Void, Void, String>()
+        new AsyncTask<Void, Void, ArrayList<apiEtis.day>>()
         {
-            String title;
-
             @Override
-            protected String doInBackground(Void... params)
+            protected ArrayList<apiEtis.day> doInBackground(Void... params)
             {
                 apiEtis my;
                 SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
 
                 if(prefs.contains("session_id")) {
                     my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getTimeTable(true, number);
-                    return null;
+                    try {
+                        return my.getTimeTable(true, number);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else
                     my = new apiEtis();
@@ -72,7 +74,7 @@ public class WeeklyScheduleFragment extends Fragment {
                         editor.putString("session_id", session_id);
                         editor.apply();
 
-                        title = my.getTimeTable(true, number);
+                        return my.getTimeTable(true, number);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -81,50 +83,41 @@ public class WeeklyScheduleFragment extends Fragment {
                 return null;
             }
 
-            protected void onPostExecute(String result)
+            protected void onPostExecute(ArrayList<apiEtis.day> result)
             {
-                System.out.println(
-                        title.length()
-                );
-                if(title != null && title.length()>0){
-                    Document doc = Jsoup.parse(title);
-                    Elements days = doc.getElementsByClass("day");
-
+                if(result != null){
                     TableLayout tableLayout = root.findViewById(R.id.table);
                     LayoutInflater inflater = getActivity().getLayoutInflater();
 
-                    for (Element day : days) {
+                    for(apiEtis.day nowDay :result) {
                         TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_schedule_title, null);
                         TextView tv1 = tr.findViewById(R.id.title);
-                        tv1.setText(day.getElementsByTag("h3").text());
+                        tv1.setText(nowDay.title);
                         tableLayout.addView(tr);
 
-                        Elements table = day.getElementsByTag("tr");
-                        if (table.isEmpty()) {
+                        if(nowDay.subjects.size() == 0){
                             tr = (TableRow) inflater.inflate(R.layout.table_row_schedule_title, null);
                             tv1 = tr.findViewById(R.id.title);
                             tv1.setText("Пар нет!");
                             tableLayout.addView(tr);
                         } else {
                             boolean first = true;
-                            for (Element row : table) {
+                            for (apiEtis.subject nowSubject : nowDay.subjects) {
                                 TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_schedule, null);
                                 TextView tv12 = tr2.findViewById(R.id.pair);
-                                tv12.setText(row.getElementsByClass("pair_num").first().ownText());
+                                tv12.setText(nowSubject.n);
 
                                 tv12 = tr2.findViewById(R.id.time);
-                                tv12.setText(row.getElementsByClass("eval").first().text());
+                                tv12.setText(nowSubject.time);
 
-                                if(row.getElementsByClass("pair_info").get(0).childrenSize() > 0) {
-                                    tv12 = tr2.findViewById(R.id.title);
-                                    tv12.setText(row.getElementsByClass("dis").first().text());
+                                tv12 = tr2.findViewById(R.id.title);
+                                tv12.setText(nowSubject.title);
 
-                                    tv12 = tr2.findViewById(R.id.teacher);
-                                    tv12.setText(row.getElementsByClass("teacher").get(0).getElementsByTag("a").get(0).text());
+                                tv12 = tr2.findViewById(R.id.teacher);
+                                tv12.setText(nowSubject.teacher);
 
-                                    tv12 = tr2.findViewById(R.id.classroom);
-                                    tv12.setText(row.getElementsByClass("aud").get(0).text());
-                                }
+                                tv12 = tr2.findViewById(R.id.classroom);
+                                tv12.setText(nowSubject.auditorium);
 
                                 TableLayout.LayoutParams params = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
                                 int px = pxFromDp(1);
