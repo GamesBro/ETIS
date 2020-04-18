@@ -6,6 +6,7 @@
     <color name="colorLightRed">#ebb6b6</color>
     <color name="colorLightGrey">#F2F3F5</color>
     <color name="colorRed">#ff1f1e</color>
+    <color name="colorInvisible">@android:color/transparent</color>
 
     <!--
     <color name="colorPrimary">#008577</color>
