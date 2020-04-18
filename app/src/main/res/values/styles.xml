@@ -3,6 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -31,5 +32,18 @@
         <item name="tabBackground"
             >@drawable/tab_background</item>
     </style>
+
+    <style name="Text">
+        <item name="fontFamily">@font/avanda</item>
+    </style>
+
+    <style name="RoundedCornerButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="background">@drawable/inset</item>
+        <item name="colorButtonNormal">#ebb6b6</item>
+        <item name="colorControlHighlight">#673ab7</item>
+    </style>
+
+
+
 
 </resources>

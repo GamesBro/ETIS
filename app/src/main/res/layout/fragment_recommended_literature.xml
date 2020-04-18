@@ -10,15 +10,15 @@
         android:layout_height="match_parent">
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="379dp"
             android:layout_height="match_parent"
             android:weightSum="2.5">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="205dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_weight="1"
+                android:gravity="center_horizontal"
                 android:text="Литература" />
 
             <TextView
@@ -30,8 +30,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_weight="1.5"
+                android:gravity="center_horizontal"
                 android:text="Место хранения" />
         </TableRow>
 
@@ -42,13 +42,13 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="239dp"
                 android:layout_weight="1"
                 android:text="Алексеев В.А. Основы проектирования и реализации баз данных [Электронный ресурс]: методические указания к проведению лабораторных работ по курсу «Базы данных»/ Алексеев В.А.— Электрон. текстовые данные.— Липецк: Липецкий государственный технический университет, ЭБС АСВ, 2014.— 26 c.— Режим доступа: http://www.iprbookshop.ru/55122
 Страницы 1 - 1" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="49dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="26" />
@@ -59,6 +59,7 @@
                 android:gravity="center_horizontal"
                 android:layout_weight="1.5"
                 android:text="Абонемент для студентов заочной формы обучения (корпус 6, зуд, 1075)" />
+
         </TableRow>
 
     </TableLayout>

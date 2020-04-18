@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">ETIS</string>
     <string name="title_home">Расписание</string>
     <string name="title_grades">Оценки</string>
     <string name="title_notifications">Учебный план</string>

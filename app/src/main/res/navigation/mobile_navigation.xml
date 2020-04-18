@@ -34,8 +34,8 @@
         tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_navigation_menu_to_teachersFragment"
-            app:destination="@+id/teachersFragment"
-            app:launchSingleTop="true" />
+            app:destination="@id/teachersFragment"
+            app:launchSingleTop="true"/>
         <action
             android:id="@+id/action_navigation_menu_to_missedClassesFragment"
             app:destination="@id/missedClassesFragment" />

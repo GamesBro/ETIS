@@ -61,10 +61,10 @@
         tools:ignore="MissingConstraints">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:isScrollContainer="false"
             android:id="@+id/test"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:isScrollContainer="false" />
     </LinearLayout>
 
     </LinearLayout>
