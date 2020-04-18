@@ -8,25 +8,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+
+        android:layout_margin="0.5dp"
+        android:background="@android:color/white"
+        android:paddingLeft="1dp"
+        android:paddingTop="2dp"
+        android:paddingRight="1dp"
+        android:paddingBottom="2dp"
+
         android:text="Введение в информаци-\nонные технологии и системы" />
 
     <TextView
         android:id="@+id/mark"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
+
+        android:layout_margin="0.5dp"
+        android:background="@android:color/white"
+        android:paddingLeft="1dp"
+        android:paddingTop="2dp"
+        android:paddingRight="1dp"
+        android:paddingBottom="2dp"
+
         android:text="Зачет" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:text="19.12.2018" />
+
+        android:layout_margin="0.5dp"
+        android:background="@android:color/white"
+        android:paddingLeft="1dp"
+        android:paddingTop="2dp"
+        android:paddingRight="1dp"
+        android:paddingBottom="2dp"
+
+        android:text="19.12.2018"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/lecturer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+
+        android:layout_margin="0.5dp"
+        android:background="@android:color/white"
+        android:paddingLeft="1dp"
+        android:paddingTop="2dp"
+        android:paddingRight="1dp"
+        android:paddingBottom="2dp"
+
         android:text="Тихомирова Л.С." />
 </TableRow>

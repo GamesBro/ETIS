@@ -3,16 +3,21 @@ package com.example.myapplication.ui.grades.Fragments;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
@@ -28,6 +33,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentTrimester extends Fragment {
     View root;
+
+    private int pxFromDp(double dp) {
+        return (int)(dp * getContext().getResources().getDisplayMetrics().density);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +82,7 @@ public class FragmentTrimester extends Fragment {
                 return null;
             }
 
+            @SuppressLint("ResourceAsColor")
             protected void onPostExecute(String result)
             {
                 if(title != null){
@@ -96,20 +106,36 @@ public class FragmentTrimester extends Fragment {
                             Elements cell = row.getElementsByTag("td");
                             if(cell.size() == 9) {
                                 TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_trimester, null);
-                                TextView tv12 = tr2.findViewById(R.id.title);
-                                tv12.setText(cell.get(0).text());
 
-                                tv12 = tr2.findViewById(R.id.type);
-                                tv12.setText(cell.get(2).text());
+                                TextView tvTitle = tr2.findViewById(R.id.title);
+                                tvTitle.setText(cell.get(0).text());
+
+                                TextView tvType = tr2.findViewById(R.id.typeControl);
+                                tvType.setText(cell.get(2).text().replace(" ", "\n"));
+                                if(row.attr("style").equals("color:red;"))
+                                    tvType.setTextColor(getResources().getColor(R.color.colorRed));
+
+                                TextView tv12 = tr2.findViewById(R.id.typeWork);
+                                tv12.setText(cell.get(1).text());
+                                if(row.attr("style").equals("color:red;"))
+                                    tv12.setTextColor(getResources().getColor(R.color.colorRed));
 
                                 tv12 = tr2.findViewById(R.id.min);
                                 tv12.setText(cell.get(4).text());
+                                if(row.attr("style").equals("color:red;"))
+                                    tv12.setTextColor(getResources().getColor(R.color.colorRed));
 
                                 tv12 = tr2.findViewById(R.id.now);
-                                tv12.setText(cell.get(5).text());
+                                tv12.setText(
+                                        cell.get(3).text() + (!cell.get(3).text().equals(cell.get(5).text()) && cell.get(5).text().length() > 0 ? "("+cell.get(5).text()+")" : "")
+                                );
+                                if(row.attr("style").equals("color:red;"))
+                                    tv12.setTextColor(getResources().getColor(R.color.colorRed));
 
                                 tv12 = tr2.findViewById(R.id.max);
                                 tv12.setText(cell.get(6).text());
+                                if(row.attr("style").equals("color:red;"))
+                                    tv12.setTextColor(getResources().getColor(R.color.colorRed));
 
                                 tableLayout.addView(tr2);
                             }

@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
@@ -13,6 +15,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -25,22 +29,78 @@ public class apiEtis{
       this.session_id = session_id;
    }
 
-   public String getTimeTable(boolean cons, int week) {
-      try {
-         System.out.println(session_id);
-         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+ week);
-         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
-         connection.setRequestProperty("Cookie", session_id);
+   //----------------
 
-         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK){
-            return readStream(connection.getInputStream());
-         }
-      } catch (IOException e) {
-         e.printStackTrace();
+   public class subject{
+      public final String n;
+      public final String time;
+      public final String title;
+      public final String teacher;
+      public final String auditorium;
+
+      public subject(String n, String time, String title, String teacher, String auditorium) {
+         this.n = n;
+         this.time = time;
+         this.title = title;
+         this.teacher = teacher;
+         this.auditorium = auditorium;
       }
+   }
 
+   public class day{
+      public final String title;
+      public final ArrayList<subject> subjects;
+
+      public day(String title, ArrayList<subject> subjects) {
+         this.title = title;
+         this.subjects = subjects;
+      }
+   }
+
+   public ArrayList<day> getTimeTable(boolean cons, int week) throws IOException {
+      String server_response = getPage("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+ week);
+      if(server_response != null) {
+
+         System.out.println(server_response.length());
+         /*
+         Document doc = Jsoup.connect("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+ week)
+                 .cookie(session_id.split("=")[0], session_id.split("=")[1])
+                 .execute().parse();
+          */
+         Document doc = Jsoup.parse(server_response);
+         Elements days = doc.getElementsByClass("day");
+
+         ArrayList<day> res = new ArrayList<>();
+
+         for (Element day : days) {
+            ArrayList<subject> subjects = new ArrayList<>();
+            Elements table = day.getElementsByTag("tr");
+            for (Element row : table) {
+
+               String title, teacher, auditorium;
+               if(row.getElementsByClass("pair_info").get(0).childrenSize() > 0) {
+                  title = row.getElementsByClass("dis").first().text();
+                  teacher = row.getElementsByClass("teacher").get(0).getElementsByTag("a").get(0).text();
+                  auditorium = row.getElementsByClass("aud").get(0).text();
+               }
+               else
+                  title = teacher = auditorium = null;
+
+               subjects.add(new subject(
+                       row.getElementsByClass("pair_num").first().ownText(),
+                       row.getElementsByClass("eval").first().text(),
+                       title, teacher, auditorium
+               ));
+            }
+
+            res.add(new day(day.getElementsByTag("h3").text(), subjects));
+         }
+         return res;
+      }
       return null;
    }
+
+   //----------------
 
    public String getRatingCurrent(){
       try {
