@@ -17,6 +17,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.MakeLinksClicable;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
@@ -25,10 +26,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.IOException;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class ElectronicResourcesFragment extends Fragment {
 
@@ -44,49 +41,20 @@ public class ElectronicResourcesFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_electronic_resources, container, false);
 
-        new AsyncTask<Void, Void, String>()
-        {
-            String title;
+        new ETISAsyncTask<String>(getActivity()){
 
-            @Override
-            protected String doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
-
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getElectricRes();
-                    if(title != null)
-                        return null;
-                }
-                else
-                    my = new apiEtis();
-
-                try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        title = my.getElectricRes();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            protected String doInBackgroundWithReauth(apiEtis ap){
+                return ap.getElectricRes();
             }
 
             protected void onPostExecute(String result)
             {
-                if(title != null){
+                if(result != null){
                     //Сначала найдем в разметке активити саму таблицу по идентификатору
                     TableLayout tableLayout = root.findViewById(R.id.elecRes);
                     LayoutInflater inflater = getActivity().getLayoutInflater();
 
-                    Document doc = Jsoup.parse(title);
+                    Document doc = Jsoup.parse(result);
                     Elements rows = doc.getElementsByClass("slimtab_nice").get(0).getElementsByTag("tr");
                     for (Element row: rows) {
                         Elements els = row.getElementsByTag("td");

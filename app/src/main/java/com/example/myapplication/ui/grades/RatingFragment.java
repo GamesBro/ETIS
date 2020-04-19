@@ -16,14 +16,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static android.content.Context.MODE_PRIVATE;
-import static org.jsoup.internal.Normalizer.normalize;
 
 public class RatingFragment extends Fragment {
 
@@ -31,53 +29,27 @@ public class RatingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    View root;
+    private View root;
 
-    @SuppressLint("StaticFieldLeak")
     @Override
+    @SuppressLint("StaticFieldLeak")
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rating, container, false);
 
-        new AsyncTask<Void, Void, ArrayList<apiEtis.Rating>>()
-        {
-            @Override
-            protected ArrayList<apiEtis.Rating> doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
+        new ETISAsyncTask<ArrayList<apiEtis.Rating>>(getActivity()){
 
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    try {
-                        return my.getRating();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    //return null;
-                }
-                else
-                    my = new apiEtis();
-
+            protected ArrayList<apiEtis.Rating> doInBackgroundWithReauth(apiEtis ap){
                 try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        return my.getRating();
-                    }
+                    return ap.getRating();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 return null;
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            protected void onPostExecute(ArrayList<apiEtis.Rating> result)
-            {
+            protected void onPostExecute(ArrayList<apiEtis.Rating> result) {
+
                 if(result != null){
                     //Сначала найдем в разметке активити саму таблицу по идентификатору
                     TableLayout tableLayout = root.findViewById(R.id.tableRating);
@@ -110,6 +82,7 @@ public class RatingFragment extends Fragment {
             }
 
         }.execute();
+
         return root;
     }
 }

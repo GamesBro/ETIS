@@ -1,10 +1,8 @@
 package com.example.myapplication;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
@@ -12,11 +10,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -62,14 +61,15 @@ public class apiEtis{
       if(server_response != null) {
 
          System.out.println(server_response.length());
-         /*
+
          Document doc = Jsoup.connect("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+ week)
                  .cookie(session_id.split("=")[0], session_id.split("=")[1])
                  .execute().parse();
-          */
+         /*
          Document doc = Jsoup.parse(server_response);
-         Elements days = doc.getElementsByClass("day");
 
+          */
+         Elements days = doc.getElementsByClass("day");
          ArrayList<day> res = new ArrayList<>();
 
          for (Element day : days) {
@@ -368,7 +368,20 @@ public class apiEtis{
       return null;
    }
 
-   public String auth(String login, String password) throws IOException {
+   //-----------------
+   public static class ResultAuth{
+      public final boolean error;
+      public final String errorString;
+      public final String token;
+
+      public ResultAuth(boolean error, String errorString, String token) {
+         this.error = error;
+         this.errorString = errorString;
+         this.token = token;
+      }
+   }
+
+   public ResultAuth auth(String login, String password) {
         /*
             https://student.psu.ru/pls/stu_cus_et/stu.login
 
@@ -389,31 +402,49 @@ public class apiEtis{
             p_username	%D1%FB%F7%E5%E2
             p_password	pass
         */
+      String errorString = null;
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.login");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 
-      URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.login");
-      HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         // Send post request
+         String params = "p_redirect=stu.teach_plan&p_username="+URLEncoder.encode(login, "windows-1251")+"&p_password="+password;
+         connection.setRequestMethod("POST");
+         connection.setDoOutput(true);
+         DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+         wr.writeBytes(params);
+         wr.flush();
+         wr.close();
 
-      // Send post request
-      String params = "p_redirect=stu.teach_plan&p_username="+URLEncoder.encode(login, "windows-1251")+"&p_password="+password;
-      connection.setRequestMethod("POST");
-      connection.setDoOutput(true);
-      DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-      wr.writeBytes(params);
-      wr.flush();
-      wr.close();
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK){
+            String server_response = readStream(connection.getInputStream());
 
-      int responseCode = connection.getResponseCode();
-      if(responseCode == HttpsURLConnection.HTTP_OK){
-         String server_response = readStream(connection.getInputStream());
-         /**/System.out.println("Data page : " + server_response);
+            String SetCookie = connection.getHeaderField("Set-Cookie");
+            if(SetCookie != null)
+               this.session_id = SetCookie.split(";")[0];
+            else{
+               this.session_id = null;
+               Document doc = Jsoup.parse(server_response);
+               Elements classError = doc.getElementsByClass("error_message");
+               if(classError.size() == 1)
+                  errorString = classError.get(0).text();
+            }
+            /*DEBAG*/System.out.println("Data page : " + server_response);
+         }
+         else
+            errorString = "Ошибка сети";
+
+      } catch (MalformedURLException e) {
+         e.printStackTrace();
+      } catch (UnsupportedEncodingException e) {
+         e.printStackTrace();
+      } catch (ProtocolException e) {
+         e.printStackTrace();
+      } catch (IOException e) {
+         e.printStackTrace();
       }
 
-      //List<String> cookies = connection.getHeaderFields().get("Set-Cookie");
-      String SetCookie = connection.getHeaderField("Set-Cookie");
-      if(SetCookie != null)
-         this.session_id = SetCookie.split(";")[0];
-
-      return this.session_id;
+      return new ResultAuth(session_id == null, errorString, session_id);
    }
 
    public String getPage(String strUrl) throws IOException {

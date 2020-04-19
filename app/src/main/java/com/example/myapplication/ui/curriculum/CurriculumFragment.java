@@ -1,8 +1,6 @@
 package com.example.myapplication.ui.curriculum;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,26 +15,23 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
+import com.example.myapplication.ETISAsyncTask;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
+public class CurriculumFragment extends Fragment {
 
-import static android.content.Context.MODE_PRIVATE;
-
-public class NotificationsFragment extends Fragment {
-
-    View root;
-    private NotificationsViewModel notificationsViewModel;
+    private View root;
+    private CurriculumViewModel curriculumViewModel;
 
     @SuppressLint("StaticFieldLeak")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+        curriculumViewModel =
+                ViewModelProviders.of(this).get(CurriculumViewModel.class);
         root = inflater.inflate(R.layout.fragment_curriculum, container, false);
         /*final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(this, new Observer<String>() {
@@ -46,45 +41,16 @@ public class NotificationsFragment extends Fragment {
             }
         });*/
 
-        new AsyncTask<Void, Void, String>()
-        {
-            String title;
+        new ETISAsyncTask<String>(getActivity()){
 
-            @Override
-            protected String doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
-
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getCurriculumShort();
-                    //return null;
-                }
-                else
-                    my = new apiEtis();
-
-                try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        title = my.getCurriculumShort();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            protected String doInBackgroundWithReauth(apiEtis ap){
+                return ap.getCurriculumShort();
             }
 
-            protected void onPostExecute(String result)
-            {
-                if(title != null){
+            protected void onPostExecute(String result){
+                if(result != null){
 
-                    Document doc = Jsoup.parse(title);
+                    Document doc = Jsoup.parse(result);
                     Elements Headers = doc.getElementsByTag("h3");
                     Elements tables = doc.getElementsByClass("common");
 

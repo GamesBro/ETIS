@@ -60,7 +60,6 @@ public class LibraryFragment extends Fragment {
                 default:
                     return new IssuedBooksFragment();
             }
-
         }
 
         @Override
@@ -74,5 +73,4 @@ public class LibraryFragment extends Fragment {
             }
         }
     }
-
 }

@@ -2,28 +2,22 @@ package com.example.myapplication.ui.menu.Fragments;
 
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.text.Html;
-import android.text.Spannable;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.example.myapplication.MakeLinksClicable;
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
@@ -32,17 +26,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.io.InputStream;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class TeachersFragment extends Fragment {
-
-
-    public TeachersFragment() {
-        // Required empty public constructor
-    }
 
     private View root;
 
@@ -52,48 +39,19 @@ public class TeachersFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_teachers, container, false);
 
-        new AsyncTask<Void, Void, String>()
-        {
-            String title;
+        new ETISAsyncTask<String>(getActivity()){
 
-            @Override
-            protected String doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
-
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getTeachers();
-                    if(title != null)
-                        return null;
-                }
-                else
-                    my = new apiEtis();
-
-                try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        title = my.getTeachers();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            protected String doInBackgroundWithReauth(apiEtis ap){
+                return ap.getTeachers();
             }
 
-            protected void onPostExecute(String result)
-            {
-                if(title != null){
+            protected void onPostExecute(String result) {
+
+                if(result != null){
                     TableLayout tableLayout = root.findViewById(R.id.teacherList);
                     LayoutInflater inflater = getActivity().getLayoutInflater();
 
-                    Document doc = Jsoup.parse(title);
+                    Document doc = Jsoup.parse(result);
                     Elements rows = doc.getElementsByClass("teacher_info");
                     for (Element row: rows) {
                         TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_teachers, null);
@@ -141,7 +99,8 @@ public class TeachersFragment extends Fragment {
         return root;
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @SuppressLint("StaticFieldLeak")
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {

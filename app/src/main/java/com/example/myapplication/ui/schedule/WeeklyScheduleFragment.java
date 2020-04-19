@@ -15,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
@@ -48,43 +49,19 @@ public class WeeklyScheduleFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_weekly_schedule, container, false);
 
-        new AsyncTask<Void, Void, ArrayList<apiEtis.day>>()
-        {
-            @Override
-            protected ArrayList<apiEtis.day> doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
+        new ETISAsyncTask<ArrayList<apiEtis.day>>(getActivity()){
 
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    try {
-                        return my.getTimeTable(true, number);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else
-                    my = new apiEtis();
-
+            protected ArrayList<apiEtis.day> doInBackgroundWithReauth(apiEtis ap){
                 try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        return my.getTimeTable(true, number);
-                    }
+                    return ap.getTimeTable(true, number);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 return null;
             }
 
-            protected void onPostExecute(ArrayList<apiEtis.day> result)
-            {
+            protected void onPostExecute(ArrayList<apiEtis.day> result) {
+
                 if(result != null){
                     TableLayout tableLayout = root.findViewById(R.id.table);
                     LayoutInflater inflater = getActivity().getLayoutInflater();

@@ -14,6 +14,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
@@ -28,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentDiplome extends Fragment {
 
-    View root;
+    private View root;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,44 +41,17 @@ public class FragmentDiplome extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_diplome, container, false);
 
-        new AsyncTask<Void, Void, String>()
-        {
-            String title;
+        new ETISAsyncTask<String>(getActivity()) {
 
             @Override
-            protected String doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
-
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getRatingDiplom();
-                    //return null;
-                }
-                else
-                    my = new apiEtis();
-
-                try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        title = my.getRatingDiplom();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            protected String doInBackgroundWithReauth(apiEtis ap){
+                return ap.getRatingDiplom();
             }
 
             protected void onPostExecute(String result)
             {
-                if(title != null){
-                    Document doc = Jsoup.parse(title);
+                if(result != null){
+                    Document doc = Jsoup.parse(result);
 
                     TableLayout tableLayout = root.findViewById(R.id.tableDiplom);
                     LayoutInflater inflater = getActivity().getLayoutInflater();

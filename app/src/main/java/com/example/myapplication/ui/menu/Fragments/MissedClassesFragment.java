@@ -1,10 +1,6 @@
 package com.example.myapplication.ui.menu.Fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -18,13 +14,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +26,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MissedClassesFragment extends Fragment {
     private View root;
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String normalize(String fio){
@@ -53,49 +44,23 @@ public class MissedClassesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         root = inflater.inflate(R.layout.fragment_missed_classes, container, false);
 
-        new AsyncTask<Void, Void, ArrayList<apiEtis.MissedClasses>>()
-        {
-            @Override
-            protected ArrayList<apiEtis.MissedClasses> doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
+        new ETISAsyncTask<ArrayList<apiEtis.MissedClasses>>(getActivity()){
 
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    try {
-                        return my.getMissedClasses();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    //return null;
-                }
-                else
-                    my = new apiEtis();
-
+            protected ArrayList<apiEtis.MissedClasses> doInBackgroundWithReauth(apiEtis ap){
                 try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        return my.getMissedClasses();
-                    }
+                    return ap.getMissedClasses();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 return null;
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
-            protected void onPostExecute(ArrayList<apiEtis.MissedClasses> result)
-            {
+            protected void onPostExecute(ArrayList<apiEtis.MissedClasses> result) {
+
                 if(result != null){
                     //Сначала найдем в разметке активити саму таблицу по идентификатору
                     TableLayout tableLayout = root.findViewById(R.id.tableMissedLessons);

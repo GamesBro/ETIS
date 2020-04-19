@@ -19,6 +19,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
@@ -32,7 +33,7 @@ import java.io.IOException;
 import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentTrimester extends Fragment {
-    View root;
+    private View root;
 
     private int pxFromDp(double dp) {
         return (int)(dp * getContext().getResources().getDisplayMetrics().density);
@@ -43,51 +44,23 @@ public class FragmentTrimester extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @SuppressLint("StaticFieldLeak")
     @Override
+    @SuppressLint("StaticFieldLeak")
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_trimester, container, false);
 
-        new AsyncTask<Void, Void, String>()
-        {
-            String title;
+        new ETISAsyncTask<String>(getActivity()){
 
-            @Override
-            protected String doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
-
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getRatingCurrent();
-                    //return null;
-                }
-                else
-                    my = new apiEtis();
-
-                try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        title = my.getRatingCurrent();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            protected String doInBackgroundWithReauth(apiEtis ap){
+                return ap.getRatingCurrent();
             }
 
             @SuppressLint("ResourceAsColor")
             protected void onPostExecute(String result)
             {
-                if(title != null){
+                if(result != null){
 
-                    Document doc = Jsoup.parse(title);
+                    Document doc = Jsoup.parse(result);
                     Elements Headers = doc.getElementsByTag("h3");
                     Elements Tables =  doc.getElementsByClass("common");
 

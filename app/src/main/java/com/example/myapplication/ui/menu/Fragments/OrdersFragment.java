@@ -20,6 +20,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.MakeLinksClicable;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
@@ -38,55 +39,23 @@ public class OrdersFragment extends Fragment {
 
     private View root;
 
-    public OrdersFragment() {
-        // Required empty public constructor
-    }
-
     @SuppressLint("StaticFieldLeak")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_orders, container, false);
 
-        new AsyncTask<Void, Void, String>()
-        {
-            String title;
+        new ETISAsyncTask<String>(getActivity()){
 
-            @Override
-            protected String doInBackground(Void... params)
-            {
-                apiEtis my;
-                SharedPreferences prefs = getActivity().getSharedPreferences("mysettings", MODE_PRIVATE);
-
-                if(prefs.contains("session_id")) {
-                    my = new apiEtis(prefs.getString("session_id", ""));
-                    title = my.getOrders();
-                    return null;
-                }
-                else
-                    my = new apiEtis();
-
-                try {
-                    String session_id = my.auth(prefs.getString("surname", ""), prefs.getString("password", ""));
-                    if(session_id != null){
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putString("session_id", session_id);
-                        editor.apply();
-
-                        title = my.getOrders();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
+            protected String doInBackgroundWithReauth(apiEtis ap){
+                return ap.getOrders();
             }
 
-            protected void onPostExecute(String result)
-            {
-                if(title != null){
+            protected void onPostExecute(String result) {
+
+                if(result != null){
                     LinearLayout Layout = root.findViewById(R.id.listOrders);
-                    Document doc = Jsoup.parse(title);
+                    Document doc = Jsoup.parse(result);
                     Elements orders = doc.getElementsByClass("ord-name");
                     for(Element order : orders){
                         Element a = order.getElementsByTag("a").get(0);
