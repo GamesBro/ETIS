@@ -3,6 +3,7 @@ package com.example.myapplication.ui.menu.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -68,9 +69,9 @@ public class OrdersFragment extends Fragment {
                     for(Element order : orders){
                         Element a = order.getElementsByTag("a").get(0);
                         a.attr("href", "https://student.psu.ru/pls/stu_cus_et/"+a.attr("href"));
-
                         TextView tv = new TextView(getContext());
                         tv.setText(Html.fromHtml(order.html()));
+                        tv.setLinkTextColor(Color.parseColor("#5ccae0"));
                         tv.setLinksClickable(true);
                         tv.setMovementMethod(LinkMovementMethod.getInstance());
                         CharSequence text = tv.getText();
