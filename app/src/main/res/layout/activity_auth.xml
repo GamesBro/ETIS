@@ -8,6 +8,15 @@
     android:background="@color/colorAccent"
     tools:context=".AuthActivity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="@font/avanda"
+        android:text="Студенты 1-го курса пароль для входа получают в деканате"
+        android:textSize="12sp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

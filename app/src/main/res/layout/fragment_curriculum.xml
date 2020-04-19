@@ -12,18 +12,21 @@
         tools:ignore="MissingConstraints">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"
+            style="@style/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
                 android:text="@string/title_notifications"
                 android:textSize="18sp" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
+        android:background="@color/colorAccent"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
@@ -44,19 +47,22 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="Дисциплина" />
+                    android:text="Дисциплина"
+                    android:textColor="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Отчетность" />
+                    android:text="Отчетность"
+                    android:textColor="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:layout_span="3"
-                    android:text="Трудоемкость" />
+                    android:text="Трудоемкость"
+                    android:textColor="@color/colorPrimary"/>
             </TableRow>
 
             <TableRow
@@ -66,7 +72,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,21 +83,24 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="1dp"
                     android:paddingRight="1dp"
-                    android:text="Ауд." />
+                    android:text="Ауд."
+                    android:textColor="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="1dp"
                     android:paddingRight="1dp"
-                    android:text="Сам." />
+                    android:text="Сам."
+                    android:textColor="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="1dp"
                     android:paddingRight="1dp"
-                    android:text="Всего" />
+                    android:text="Всего"
+                    android:textColor="@color/colorPrimary"/>
             </TableRow>
 
         </TableLayout>

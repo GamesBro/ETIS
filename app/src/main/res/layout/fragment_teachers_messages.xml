@@ -8,6 +8,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.Toolbar
@@ -19,11 +20,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_teachers_messages"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
+        android:background="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.grades.Fragments.FragmentTrimester">
+    tools:context=".ui.grades.Fragments.FragmentTrimester"
+    android:background="@color/colorAccent">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -28,7 +29,9 @@
                     android:layout_weight="1"
                     android:background="#EDF1F5"
                     android:gravity="center"
-                    android:text="Тема" />
+                    android:text="Тема"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"/>
 
                 <TextView
                     android:id="@+id/textView4"
@@ -36,12 +39,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
+                    android:backgroundTint="@color/colorAccent"
                     android:gravity="center_horizontal"
                     android:paddingLeft="5dp"
                     android:paddingTop="2dp"
                     android:paddingRight="5dp"
                     android:paddingBottom="2dp"
-                    android:text="Вид\nработы" />
+                    android:text="Вид\nработы"
+                    android:textColor="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/type"
@@ -49,12 +54,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
-                    android:gravity="center_horizontal"
+                    android:backgroundTint="@color/colorAccent"
+                    android:gravity="center"
                     android:paddingLeft="5dp"
                     android:paddingTop="2dp"
                     android:paddingRight="5dp"
                     android:paddingBottom="2dp"
-                    android:text="Вид\nконтроля" />
+                    android:text="Вид\nконтроля"
+                    android:textColor="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/min"
@@ -62,8 +69,11 @@
                     android:layout_height="match_parent"
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
-                    android:text="проход."
-                    android:textSize="12sp" />
+                    android:backgroundTint="@color/colorAccent"
+                    android:gravity="center"
+                    android:text="проходной\nбалл"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/now"
@@ -71,17 +81,25 @@
                     android:layout_height="match_parent"
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
+                    android:backgroundTint="@color/colorAccent"
+                    android:gravity="top"
+                    android:paddingTop="2dp"
                     android:text="оценка"
-                    android:textSize="12sp" />
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/max"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_gravity="start"
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
-                    android:text=" макс. "
-                    android:textSize="12sp" />
+                    android:backgroundTint="@color/colorAccent"
+                    android:paddingTop="2dp"
+                    android:text="макс"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
 
             </TableRow>
 

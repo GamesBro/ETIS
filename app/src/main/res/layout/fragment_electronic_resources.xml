@@ -10,7 +10,8 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        style="@style/Toolbar">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -21,11 +22,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_electronic_res"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <TableLayout
+        android:background="@color/colorAccent"
         android:id="@+id/elecRes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,21 +47,24 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:gravity="center_horizontal"
-                android:text="Ресурс" />
+                android:text="Ресурс"
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="Логин" />
+                android:text="Логин"
+                android:textColor="@color/colorPrimary"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="Пароль" />
+                android:text="Пароль"
+                android:textColor="@color/colorPrimary"/>
         </TableRow>
 
     </TableLayout>

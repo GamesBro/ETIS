@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorAccent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +20,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"
+            style="@style/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentInsetEnd="16dp"
@@ -27,15 +28,20 @@
             android:paddingBottom="10dp">
 
             <LinearLayout
+                style="@style/Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/inset"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
                     android:text="ЕТИС ПГНИУ: Сычев Иван Андреевич"
+                    android:textColor="@color/colorAccent"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -43,7 +49,10 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Фундаментальная информатика и информационные технологии очная 2018" />
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Фундаментальная информатика и информационные технологии очная 2018"
+                    android:textColor="@color/colorAccent" />
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>

@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.grades.Fragments.FragmentDiplome">
+    tools:context=".ui.grades.Fragments.FragmentDiplome"
+    android:background="@color/colorAccent">
 
     <ScrollView
         android:layout_width="fill_parent"

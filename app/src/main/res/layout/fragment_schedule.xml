@@ -10,7 +10,8 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        style="@style/Toolbar">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
@@ -19,11 +20,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_home"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:background="@color/colorAccent"
         android:id="@+id/my"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

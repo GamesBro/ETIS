@@ -17,4 +17,13 @@
         <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <style name="Toolbar">
+        <item name="android:fontFamily">@font/font_main</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <!-- <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item> -->
+        <item name="android:background">@color/colorAccent</item>
+    </style>
 </resources>

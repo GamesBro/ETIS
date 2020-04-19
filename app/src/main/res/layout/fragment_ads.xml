@@ -14,16 +14,19 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            style="@style/Toolbar"
             app:navigationIcon="?attr/homeAsUpIndicator">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_ads"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
+        android:background="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"

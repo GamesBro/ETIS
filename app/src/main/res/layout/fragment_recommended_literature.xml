@@ -7,38 +7,44 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        style="@style/Toolbar">
 
         <TableRow
             android:layout_width="379dp"
             android:layout_height="match_parent"
-            android:weightSum="2.5">
+            android:weightSum="2.5"
+            style="@style/Toolbar">
 
             <TextView
                 android:layout_width="205dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="Литература" />
+                android:text="Литература"
+                android:textColor="@color/colorPrimary"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Доступно\nкниг" />
+                android:text="Доступно\nкниг"
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:gravity="center_horizontal"
-                android:text="Место хранения" />
+                android:text="Место хранения"
+                android:textColor="@color/colorPrimary"/>
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="2.5">
+            android:weightSum="2.5"
+            style="@style/Toolbar">
 
             <TextView
                 android:layout_width="wrap_content"

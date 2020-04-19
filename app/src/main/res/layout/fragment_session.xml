@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.grades.Fragments.FragmentSession">
+    tools:context=".ui.grades.Fragments.FragmentSession"
+    android:background="@color/colorAccent">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -18,6 +19,7 @@
                 android:layout_height="match_parent" >
 
                 <TextView
+                    android:backgroundTint="@color/colorAccent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -25,7 +27,8 @@
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
                     android:padding="2dp"
-                    android:text="Дисциплина" />
+                    android:text="Дисциплина"
+                    android:textColor="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -34,7 +37,9 @@
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
                     android:padding="2dp"
-                    android:text="Оценка" />
+                    android:text="Оценка"
+                    android:backgroundTint="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -43,7 +48,9 @@
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
                     android:padding="2dp"
-                    android:text="Дата" />
+                    android:text="Дата"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,7 +59,9 @@
                     android:layout_margin="0.5dp"
                     android:background="#EDF1F5"
                     android:padding="2dp"
-                    android:text="Преподаватель" />
+                    android:text="Преподаватель"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"/>
 
             </TableRow>
         </TableLayout>
