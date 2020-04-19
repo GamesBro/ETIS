@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ public class Auth extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_auth);
+
     }
 
     @SuppressLint("StaticFieldLeak")
