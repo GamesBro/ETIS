@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.myapplication.ETISAsyncTask;
 import com.example.myapplication.MakeLinksClicable;
@@ -40,6 +42,14 @@ public class AdsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_ads, container, false);
+
+        androidx.appcompat.widget.Toolbar mainToolbar = root.findViewById(R.id.toolbar);
+        mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         new ETISAsyncTask<ArrayList<String>>(getActivity()){
 

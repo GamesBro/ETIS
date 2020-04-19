@@ -28,6 +28,15 @@ public class LibraryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_library, container, false);
 
+        // Добавляем кнопку назад
+        androidx.appcompat.widget.Toolbar mainToolbar = root.findViewById(R.id.toolbar);
+        mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         // Получаем ViewPager и устанавливаем в него адаптер
         ViewPager viewPager = root.findViewById(R.id.tadViewPager);
         viewPager.setAdapter(new MyAdapter(getActivity().getSupportFragmentManager()));

@@ -47,6 +47,14 @@ public class MissedClassesFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_missed_classes, container, false);
 
+        androidx.appcompat.widget.Toolbar mainToolbar = root.findViewById(R.id.toolbar);
+        mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         new ETISAsyncTask<ArrayList<apiEtis.MissedClasses>>(getActivity()){
 
             protected ArrayList<apiEtis.MissedClasses> doInBackgroundWithReauth(apiEtis ap){

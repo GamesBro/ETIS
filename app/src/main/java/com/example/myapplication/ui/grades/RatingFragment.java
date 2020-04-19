@@ -37,6 +37,14 @@ public class RatingFragment extends Fragment {
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_rating, container, false);
 
+        androidx.appcompat.widget.Toolbar mainToolbar = root.findViewById(R.id.toolbar);
+        mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         new ETISAsyncTask<ArrayList<apiEtis.Rating>>(getActivity()){
 
             protected ArrayList<apiEtis.Rating> doInBackgroundWithReauth(apiEtis ap){

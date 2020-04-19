@@ -45,6 +45,14 @@ public class OrdersFragment extends Fragment {
 
         root = inflater.inflate(R.layout.fragment_orders, container, false);
 
+        androidx.appcompat.widget.Toolbar mainToolbar = root.findViewById(R.id.toolbar);
+        mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         new ETISAsyncTask<String>(getActivity()){
 
             protected String doInBackgroundWithReauth(apiEtis ap){
