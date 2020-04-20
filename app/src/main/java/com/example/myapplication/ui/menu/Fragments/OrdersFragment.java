@@ -31,10 +31,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-
-import static android.content.Context.MODE_PRIVATE;
-
 
 public class OrdersFragment extends Fragment {
 
@@ -60,6 +56,7 @@ public class OrdersFragment extends Fragment {
                 return ap.getOrders();
             }
 
+            @SuppressLint("ResourceAsColor")
             protected void onPostExecute(String result) {
 
                 if(result != null){
@@ -71,7 +68,7 @@ public class OrdersFragment extends Fragment {
                         a.attr("href", "https://student.psu.ru/pls/stu_cus_et/"+a.attr("href"));
                         TextView tv = new TextView(getContext());
                         tv.setText(Html.fromHtml(order.html()));
-                        tv.setLinkTextColor(Color.parseColor("#5ccae0"));
+                        tv.setLinkTextColor(R.color.colorLinks);
                         tv.setLinksClickable(true);
                         tv.setMovementMethod(LinkMovementMethod.getInstance());
                         CharSequence text = tv.getText();

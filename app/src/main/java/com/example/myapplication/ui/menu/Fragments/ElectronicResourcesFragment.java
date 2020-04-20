@@ -55,6 +55,7 @@ public class ElectronicResourcesFragment extends Fragment {
                 return ap.getElectricRes();
             }
 
+            @SuppressLint("ResourceAsColor")
             protected void onPostExecute(String result)
             {
                 if(result != null){
@@ -71,6 +72,7 @@ public class ElectronicResourcesFragment extends Fragment {
 
                             TextView tv = tr.findViewById(R.id.resources);
                             tv.setText(Html.fromHtml(els.get(0).html()));
+                            tv.setLinkTextColor(R.color.colorLinks);
                             tv.setLinksClickable(true);
                             tv.setMovementMethod(LinkMovementMethod.getInstance());
                             CharSequence text = tv.getText();

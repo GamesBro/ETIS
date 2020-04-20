@@ -8,6 +8,10 @@
     <color name="colorRed">#ff1f1e</color>
     <color name="colorInvisible">@android:color/transparent</color>
 
+    <color name="colorLinks">#5ccae0</color>
+
+
+
     <!--
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>

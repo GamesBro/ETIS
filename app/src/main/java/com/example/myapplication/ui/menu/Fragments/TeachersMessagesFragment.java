@@ -51,6 +51,7 @@ public class TeachersMessagesFragment extends Fragment {
                 return ap.getTeacherMessages();
             }
 
+            @SuppressLint("ResourceAsColor")
             protected void onPostExecute(String result) {
 
                 if(result != null){
@@ -67,6 +68,7 @@ public class TeachersMessagesFragment extends Fragment {
                                 ).replaceAll("")
                         ));
                         textView.setLinksClickable(true);
+                        textView.setLinkTextColor(R.color.colorLinks);
                         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
                         CharSequence text = textView.getText();

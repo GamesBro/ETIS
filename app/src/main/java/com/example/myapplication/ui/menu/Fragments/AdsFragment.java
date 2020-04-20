@@ -62,6 +62,7 @@ public class AdsFragment extends Fragment {
                 return null;
             }
 
+            @SuppressLint("ResourceAsColor")
             protected void onPostExecute(ArrayList<String> result) {
 
                 if(result != null){
@@ -71,6 +72,7 @@ public class AdsFragment extends Fragment {
                         TextView textView = new TextView(getContext());
                         textView.setBackgroundResource(R.drawable.ads);
                         textView.setText(Html.fromHtml(ads));
+                        textView.setLinkTextColor(R.color.colorLinks);
                         textView.setLinksClickable(true);
                         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
