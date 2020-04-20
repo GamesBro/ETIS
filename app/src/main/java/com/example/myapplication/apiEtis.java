@@ -16,6 +16,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -26,6 +27,54 @@ public class apiEtis{
    public apiEtis(){}
    public apiEtis(String session_id){
       this.session_id = session_id;
+   }
+
+   //----------------
+
+   public class UserInfo{
+      public final String fio;
+      public final String direction;
+      public final String format;
+      public final String startYear;
+
+      public final int cntMissedClassed;
+
+      public UserInfo(String fio, String direction, String format, String startYear, int cntMissedClassed) {
+         this.fio = fio;
+         this.direction = direction;
+         this.format = format;
+         this.startYear = startYear;
+         this.cntMissedClassed = cntMissedClassed;
+      }
+   }
+
+   public UserInfo getUserInfo(){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.main");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", this.session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            String server_response = readStream(connection.getInputStream());
+
+            Document doc = Jsoup.parse(server_response);
+            Element infoBlock = doc.getElementsByClass("span12").get(0).child(0);
+            Element leftMenu = doc.getElementsByClass("span3").get(0);
+
+            int cntMissedClassed = 0;
+            String text = leftMenu.getElementsByAttributeValue("href", "stu.absence").text();
+            Matcher matcher = Pattern.compile("\\d+").matcher(text);
+            if(matcher.find())
+               cntMissedClassed = Integer.parseInt(text.substring(matcher.start(), matcher.end()));
+
+            return new UserInfo(infoBlock.ownText(), infoBlock.child(0).text(), infoBlock.child(1).text(), infoBlock.child(2).text(), cntMissedClassed);
+         }
+
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      return null;
    }
 
    //----------------

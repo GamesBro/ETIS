@@ -5,12 +5,10 @@ import android.os.AsyncTask;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.myapplication.apiEtis;
-
 import static android.content.Context.MODE_PRIVATE;
 
 public abstract class ETISAsyncTask<T> extends AsyncTask<Void, Void, T> {
-    SharedPreferences prefs;
+    protected SharedPreferences prefs;
 
     public ETISAsyncTask(FragmentActivity f){
         prefs = f.getSharedPreferences("mysettings", MODE_PRIVATE);

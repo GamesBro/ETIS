@@ -66,6 +66,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return mData.get(id);
     }
 
+    void setItem(int position, String newText){
+        mData.set(position, newText);
+        notifyDataSetChanged();
+    }
+
     // allows clicks events to be caught
     void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
