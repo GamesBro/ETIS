@@ -72,7 +72,11 @@
         android:id="@+id/ordersFragment"
         android:name="com.example.myapplication.ui.menu.Fragments.OrdersFragment"
         android:label="fragment_orders"
-        tools:layout="@layout/fragment_orders" />
+        tools:layout="@layout/fragment_orders" >
+        <action
+            android:id="@+id/action_ordersFragment_to_orderViewFragment"
+            app:destination="@id/orderViewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/libraryFragment"
         android:name="com.example.myapplication.ui.menu.Fragments.LibraryFragment"
@@ -103,5 +107,10 @@
         android:name="com.example.myapplication.ui.menu.Fragments.SettingFragment"
         android:label="SettingFragment"
         tools:layout="@layout/fragment_setting"/>
+    <fragment
+        android:id="@+id/orderViewFragment"
+        android:name="com.example.myapplication.ui.menu.Fragments.OrderViewFragment"
+        android:label="fragment_order_view"
+        tools:layout="@layout/fragment_order_view" />
 
 </navigation>

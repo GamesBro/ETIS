@@ -436,20 +436,46 @@ public class apiEtis{
 
    //----------------
 
-   public String getOrders(){
+   public class Order{
+      public final String title;
+      public final String url;
+
+      public Order(String title, String url) {
+         this.title = title;
+         this.url = url;
+      }
+   }
+
+   public ArrayList<Order> getOrders(){
       try {
          URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.orders");
          HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
          connection.setRequestProperty("Cookie", session_id);
 
          if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-            return readStream(connection.getInputStream());
+            String server_response = readStream(connection.getInputStream());
+            if(server_response != null){
+
+               ArrayList<Order> res = new ArrayList<>();
+
+               Document doc = Jsoup.parse(server_response);
+               Elements orders = doc.getElementsByClass("ord-name");
+
+               for(Element order : orders){
+                  Element a = order.getElementsByTag("a").get(0);
+                  res.add(new Order(a.text(), a.attr("href")));
+               }
+
+               return res;
+            }
          }
       } catch (IOException e) {
          e.printStackTrace();
       }
       return null;
    }
+
+   //----------------
 
    public ArrayList<String> getAnnounce() throws IOException{
       ArrayList<String> res = new ArrayList<>();

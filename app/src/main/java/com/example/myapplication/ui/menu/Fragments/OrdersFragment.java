@@ -2,45 +2,31 @@ package com.example.myapplication.ui.menu.Fragments;
 
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import android.text.Html;
-import android.text.Layout;
-import android.text.Spannable;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.myapplication.ETISAsyncTask;
-import com.example.myapplication.MakeLinksClicable;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import java.util.ArrayList;
 
 
 public class OrdersFragment extends Fragment {
-
-    private View root;
 
     @SuppressLint("StaticFieldLeak")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        root = inflater.inflate(R.layout.fragment_orders, container, false);
+        final View root = inflater.inflate(R.layout.fragment_orders, container, false);
 
         androidx.appcompat.widget.Toolbar mainToolbar = root.findViewById(R.id.toolbar);
         mainToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -50,30 +36,22 @@ public class OrdersFragment extends Fragment {
             }
         });
 
-        new ETISAsyncTask<String>(getActivity()){
+        new ETISAsyncTask<ArrayList<apiEtis.Order>>(getActivity()){
 
-            protected String doInBackgroundWithReauth(apiEtis ap){
+            protected ArrayList<apiEtis.Order> doInBackgroundWithReauth(apiEtis ap){
                 return ap.getOrders();
             }
 
             @SuppressLint("ResourceAsColor")
-            protected void onPostExecute(String result) {
-
+            protected void onPostExecute(ArrayList<apiEtis.Order> result) {
                 if(result != null){
                     LinearLayout Layout = root.findViewById(R.id.listOrders);
-                    Document doc = Jsoup.parse(result);
-                    Elements orders = doc.getElementsByClass("ord-name");
-                    for(Element order : orders){
-                        Element a = order.getElementsByTag("a").get(0);
-                        a.attr("href", "https://student.psu.ru/pls/stu_cus_et/"+a.attr("href"));
+                    for(apiEtis.Order ord : result){
                         TextView tv = new TextView(getContext());
-                        tv.setText(Html.fromHtml(order.html()));
-                        tv.setLinkTextColor(R.color.colorLinks);
+                        tv.setText(ord.title);
+                        tv.setTextColor(R.color.colorLinks);
                         tv.setLinksClickable(true);
-                        tv.setMovementMethod(LinkMovementMethod.getInstance());
-                        CharSequence text = tv.getText();
-                        if (text instanceof Spannable)
-                            tv.setText((new MakeLinksClicable()).reformatText(text));
+                        tv.setOnClickListener(new cliker(ord.url));
                         Layout.addView(tv);
                     }
                 }
@@ -86,5 +64,18 @@ public class OrdersFragment extends Fragment {
 
         return root;
     }
+
+    class cliker implements View.OnClickListener {
+        Bundle bundle;
+        cliker(String url){
+            bundle = new Bundle();
+            bundle.putString("url", url);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.orderViewFragment, bundle);
+        }
+    };
 
 }
