@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
                     ViewPager viewPager = root.findViewById(R.id.tabViewPager);
                     MyAdapter adapter = new MyAdapter(getActivity().getSupportFragmentManager(), result);
                     viewPager.setAdapter(adapter);
-                    //viewPager.setCurrentItem(result.getNowWeekIndex());
+                    viewPager.setCurrentItem(result.getNowWeekIndex());
 
                     //Передаём ViewPager в TabLayout
                     TabLayout tabLayout = root.findViewById(R.id.tabWeeks);

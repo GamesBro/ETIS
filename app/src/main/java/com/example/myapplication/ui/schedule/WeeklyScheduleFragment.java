@@ -67,8 +67,7 @@ public class WeeklyScheduleFragment extends Fragment {
                     TableLayout tableLayout = root.findViewById(R.id.table);
                     LayoutInflater inflater = activity.getLayoutInflater();
 
-                    for(apiEtis.day nowDay :result) {
-                        System.out.println(nowDay.title);
+                    for(apiEtis.day nowDay : result) {
                         TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_schedule_title, null);
                         TextView tv1 = tr.findViewById(R.id.title);
                         tv1.setText(nowDay.title);
