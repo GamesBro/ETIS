@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
@@ -21,11 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.myapplication.AuthActivity;
 import com.example.myapplication.ETISAsyncTask;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.apiEtis;
 
@@ -49,6 +54,14 @@ public class MenuFragment extends Fragment implements MyRecyclerViewAdapter.Item
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        Button im = root.findViewById(R.id.button);
+        im.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.settingFragment);
+            }
+        });
 
         // set up the RecyclerView
         RecyclerView recyclerView = root.findViewById(R.id.test);
@@ -79,11 +92,11 @@ public class MenuFragment extends Fragment implements MyRecyclerViewAdapter.Item
                     editor.apply();
 
                     TextView textViewFio = (TextView)root.findViewById(R.id.fio);
-                    if(textViewFio.getText().equals(result.fio))
+                    if(!textViewFio.getText().equals(result.fio))
                         textViewFio.setText(result.fio);
 
                     TextView textViewDirection = (TextView)root.findViewById(R.id.direction);
-                    if(textViewDirection.getText().equals(result.direction))
+                    if(!textViewDirection.getText().equals(result.direction))
                         textViewDirection.setText(result.direction);
 
                     adapter.setItem(2, String.format("%s (%d)", adapter.getItem(2), result.cntMissedClassed));

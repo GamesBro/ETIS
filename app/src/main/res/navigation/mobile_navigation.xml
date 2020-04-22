@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_navigation_menu_to_teachersMessagesFragment"
             app:destination="@id/teachersMessagesFragment" />
+        <action
+            android:id="@+id/action_navigation_menu_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/teachersFragment"
@@ -95,5 +98,10 @@
         android:name="com.example.myapplication.ui.grades.RatingFragment"
         android:label="fragment_rating"
         tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.myapplication.ui.menu.Fragments.SettingFragment"
+        android:label="SettingFragment"
+        tools:layout="@layout/fragment_setting"/>
 
 </navigation>

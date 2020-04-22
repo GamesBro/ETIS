@@ -77,6 +77,40 @@ public class apiEtis{
       return null;
    }
 
+   public String changePassword(String oldPassword, String newPassword){
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.change_pass");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+
+         // Send post request
+         String params = "p_old="+URLEncoder.encode(oldPassword, "windows-1251")+
+                 "&p_new="+URLEncoder.encode(newPassword, "windows-1251")+
+                 "&p_new_confirm="+URLEncoder.encode(newPassword, "windows-1251");
+         connection.setRequestProperty("Cookie", this.session_id);
+         connection.setRequestMethod("POST");
+         connection.setDoOutput(true);
+         DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+         wr.writeBytes(params);
+         wr.flush();
+         wr.close();
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            String server_response = readStream(connection.getInputStream());
+
+            Document doc = Jsoup.parse(server_response);
+            Elements errorBlock = doc.getElementsByClass("span9").get(0).getElementsByClass("error");
+            if(errorBlock.size() > 0)
+               return errorBlock.get(0).text();
+            else
+               return doc.getElementsByClass("span9").get(0).getElementsByAttribute("h3").get(0).text();
+         }
+
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      return null;
+   }
    //----------------
 
    enum WeekType { THEORY, SESSION, HOLIDAY }

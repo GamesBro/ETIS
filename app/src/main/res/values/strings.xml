@@ -11,6 +11,8 @@
     <string name="title_electronic_res">Электронные ресурсы</string>
     <string name="title_ads">Объявления</string>
     <string name="title_teachers_messages">Сообщения от преподавателей</string>
+    <string name="title_rating">Рейтинг</string>
+    <string name="title_setting">Настройки</string>
 
     <string name="title_activity_auth">Auth</string>
     <string name="dummy_button">Dummy Button</string>
@@ -34,8 +36,6 @@
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="с">200dp</string>
-    <string name="title_rating">Рейтинг</string>
 
 </resources>
