@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +39,8 @@ public class WeeklyScheduleFragment extends Fragment {
         this.number = number;
     }
 
-    private int pxFromDp(int dp) {
-        return (int)(dp * getContext().getResources().getDisplayMetrics().density);
+    private int pxFromDp(int dp , FragmentActivity fm) {
+        return (int)(dp * fm.getResources().getDisplayMetrics().density);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -64,9 +65,10 @@ public class WeeklyScheduleFragment extends Fragment {
 
                 if(result != null){
                     TableLayout tableLayout = root.findViewById(R.id.table);
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    LayoutInflater inflater = activity.getLayoutInflater();
 
                     for(apiEtis.day nowDay :result) {
+                        System.out.println(nowDay.title);
                         TableRow tr = (TableRow) inflater.inflate(R.layout.table_row_schedule_title, null);
                         TextView tv1 = tr.findViewById(R.id.title);
                         tv1.setText(nowDay.title);
@@ -78,6 +80,7 @@ public class WeeklyScheduleFragment extends Fragment {
                             tv1.setText("Пар нет!");
                             tableLayout.addView(tr);
                         } else {
+
                             boolean first = true;
                             for (apiEtis.subject nowSubject : nowDay.subjects) {
                                 TableRow tr2 = (TableRow) inflater.inflate(R.layout.table_row_schedule, null);
@@ -97,12 +100,16 @@ public class WeeklyScheduleFragment extends Fragment {
                                 tv12.setText(nowSubject.auditorium);
 
                                 TableLayout.LayoutParams params = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-                                int px = pxFromDp(1);
+                                int px = pxFromDp(1, activity);
                                 params.setMargins(px,first ? px : 0,px,px);
                                 tableLayout.addView(tr2, params);
                                 first = false;
                             }
+
+
                         }
+
+
                     }
                 }
                 else {

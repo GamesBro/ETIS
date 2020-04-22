@@ -79,6 +79,45 @@ public class apiEtis{
 
    //----------------
 
+   enum WeekType { THEORY, SESSION, HOLIDAY }
+
+   public class WeekManager{
+      ArrayList<Week> weeks;
+      int nowWeekIndex;
+
+      WeekManager(){
+         weeks = new ArrayList<>();
+      }
+
+      public int getCount(){
+         return weeks.size();
+      }
+
+      public void add(int number, WeekType type, boolean current){
+         weeks.add(new Week(number, type));
+         if(current)
+            nowWeekIndex = weeks.size() - 1;
+      }
+
+      public Week get(int index){
+         return weeks.get(index);
+      }
+
+      public int getNowWeekIndex(){
+         return nowWeekIndex;
+      }
+
+      public class Week{
+         public final int number;
+         public final WeekType type;
+
+         Week(int number, WeekType type){
+            this.number = number;
+            this.type = type;
+         }
+      }
+   }
+
    public class subject{
       public final String n;
       public final String time;
@@ -86,7 +125,7 @@ public class apiEtis{
       public final String teacher;
       public final String auditorium;
 
-      public subject(String n, String time, String title, String teacher, String auditorium) {
+      subject(String n, String time, String title, String teacher, String auditorium) {
          this.n = n;
          this.time = time;
          this.title = title;
@@ -99,10 +138,44 @@ public class apiEtis{
       public final String title;
       public final ArrayList<subject> subjects;
 
-      public day(String title, ArrayList<subject> subjects) {
+      day(String title, ArrayList<subject> subjects) {
          this.title = title;
          this.subjects = subjects;
       }
+   }
+
+   public WeekManager getWeeksManager(){
+
+      try {
+         URL url = new URL("https://student.psu.ru/pls/stu_cus_et/stu.timetable");
+         HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+         connection.setRequestProperty("Cookie", session_id);
+
+         if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+            String server_response = readStream(connection.getInputStream());
+
+            Document doc = Jsoup.parse(server_response);
+            Elements weeks = doc.getElementsByClass("weeks").get(0).getElementsByClass("week");
+
+            WeekManager wm = new WeekManager();
+
+            for (Element week: weeks) {
+               wm.add(
+                       Integer.parseInt(week.text()),
+                       week.hasClass("theory") ? WeekType.THEORY :
+                               week.hasClass("session") ? WeekType.SESSION : WeekType.HOLIDAY,
+                       week.hasClass("current")
+               );
+            }
+
+            return wm;
+         }
+
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+
+      return null;
    }
 
    public ArrayList<day> getTimeTable(boolean cons, int week) throws IOException {
@@ -111,13 +184,13 @@ public class apiEtis{
 
          System.out.println(server_response.length());
 
+         /*
          Document doc = Jsoup.connect("https://student.psu.ru/pls/stu_cus_et/stu.timetable?p_cons="+(cons?'y':'n')+"&p_week="+ week)
                  .cookie(session_id.split("=")[0], session_id.split("=")[1])
-                 .execute().parse();
-         /*
+                 .execute().parse();*/
+
          Document doc = Jsoup.parse(server_response);
 
-          */
          Elements days = doc.getElementsByClass("day");
          ArrayList<day> res = new ArrayList<>();
 
@@ -495,6 +568,8 @@ public class apiEtis{
 
       return new ResultAuth(session_id == null, errorString, session_id);
    }
+
+   //-----------------
 
    public String getPage(String strUrl) throws IOException {
       URL url = new URL(strUrl);

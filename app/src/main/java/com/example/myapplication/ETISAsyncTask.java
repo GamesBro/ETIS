@@ -9,8 +9,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public abstract class ETISAsyncTask<T> extends AsyncTask<Void, Void, T> {
     protected SharedPreferences prefs;
+    protected FragmentActivity activity;
 
     public ETISAsyncTask(FragmentActivity f){
+        activity = f;
         prefs = f.getSharedPreferences("mysettings", MODE_PRIVATE);
     }
 
