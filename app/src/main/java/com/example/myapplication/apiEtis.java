@@ -97,12 +97,12 @@ public class apiEtis{
          if(connection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
             String server_response = readStream(connection.getInputStream());
 
-            Document doc = Jsoup.parse(server_response);
-            Elements errorBlock = doc.getElementsByClass("span9").get(0).getElementsByClass("error");
+            Element span9 = Jsoup.parse(server_response).getElementsByClass("span9").get(0);
+            Elements errorBlock = span9.getElementsByClass("error");
             if(errorBlock.size() > 0)
                return errorBlock.get(0).text();
             else
-               return doc.getElementsByClass("span9").get(0).getElementsByAttribute("h3").get(0).text();
+               return span9.getElementsByTag("h3").get(0).text();
          }
 
       } catch (IOException e) {
@@ -111,6 +111,7 @@ public class apiEtis{
 
       return null;
    }
+
    //----------------
 
    enum WeekType { THEORY, SESSION, HOLIDAY }
