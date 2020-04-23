@@ -32,6 +32,50 @@ public class apiEtis{
 
     //-----
 
+    public class ItemHistoryBook{
+        public final String title;
+        public final String date_issue;
+        public final String date_planned_return;
+        public final String date_return;
+
+        ItemHistoryBook(String title, String date_issue, String date_planned_return, String date_return) {
+            this.title = title;
+            this.date_issue = date_issue;
+            this.date_planned_return = date_planned_return;
+            this.date_return = date_return;
+        }
+    }
+
+    public ArrayList<ItemHistoryBook> getIssuedBooks() {
+        String server_response = null;
+        try {
+            server_response = getPage("https://student.psu.ru/pls/stu_cus_et/stu.library?p_mode=history");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (server_response != null) {
+            ArrayList<ItemHistoryBook> res = new ArrayList<>();
+            Elements rows = Jsoup.parse(server_response).getElementsByClass("common").get(0).getElementsByTag("tr");
+            for(Element row : rows){
+                Elements td = row.getElementsByTag("td");
+                if(td.size() == 4){
+                    res.add(
+                            new ItemHistoryBook(
+                                    td.get(0).text(),
+                                    td.get(1).text(),
+                                    td.get(2).text(),
+                                    td.get(3).text()
+                            )
+                    );
+                }
+            }
+            return res;
+        }
+        return null;
+    }
+
+    //-----
+
     public class StorageLocation{
         public final String count;
         public final String location;

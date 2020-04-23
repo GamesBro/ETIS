@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <TableLayout
+            android:id="@+id/tableIssuedBooks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -52,38 +53,6 @@
                     android:gravity="center_horizontal"
                     android:text="Фактическая\nдата возврата"
                     android:textColor="@color/colorPrimary"/>
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Теория вероятностей и математическая статистика:задачи и упражнения : учебно-методическое пособие для студентов механико-математического и экономического факультетов/М-во образования и науки РФ, Перм. гос. нац. исслед. ун-т.-Пермь,2012, ISBN 978-5-7944-2013-5.-142." />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="16.12.2019" />
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="15.02.2020" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal" />
             </TableRow>
 
         </TableLayout>
