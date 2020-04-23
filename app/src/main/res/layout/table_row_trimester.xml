@@ -1,56 +1,44 @@
-<TableRow
-    android:layout_width="match_parent"
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:measureWithLargestChild="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:measureWithLargestChild="true">
 
     <TextView
         android:id="@+id/title"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_weight="1"
-
-        android:background="@android:color/white"
-        android:layout_margin="0.5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="2dp"
-        android:paddingRight="5dp"
-        android:paddingBottom="2dp"
-        android:text="Тема" />
-
-    <TextView
-        android:id="@+id/typeWork"
-        android:layout_width="wrap_content"
+        android:layout_width="134dp"
         android:layout_height="match_parent"
         android:layout_margin="0.5dp"
+
+        android:layout_weight="1"
         android:background="@android:color/white"
-        android:gravity="center_horizontal"
         android:paddingLeft="5dp"
         android:paddingTop="2dp"
         android:paddingRight="5dp"
         android:paddingBottom="2dp"
-        android:text="Вид\nработы" />
+        android:text="Информационные\n технологии\n и вычислительные системы" />
 
     <TextView
         android:id="@+id/typeControl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="0.5dp"
+        android:layout_weight="1"
         android:background="@android:color/white"
         android:gravity="center_horizontal"
         android:paddingLeft="5dp"
         android:paddingTop="2dp"
         android:paddingRight="5dp"
         android:paddingBottom="2dp"
-        android:text="Вид\nконтроля" />
+        android:text="тестирование" />
 
     <TextView
         android:id="@+id/min"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="0.5dp"
-        android:gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@android:color/white"
+        android:gravity="center_horizontal"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:text="Проход." />
@@ -60,21 +48,23 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="0.5dp"
-        android:gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@android:color/white"
+        android:gravity="center_horizontal"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:text="текущий" />
 
     <TextView
         android:id="@+id/max"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="0.5dp"
-        android:gravity="center_horizontal"
+        android:layout_weight="1"
         android:background="@android:color/white"
+        android:gravity="center_horizontal"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:text="макс." />
+        android:text="1000" />
 
 </TableRow>
