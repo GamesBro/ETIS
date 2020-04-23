@@ -25,9 +25,9 @@ public class MakeLinksClicable
 
         public CustomerTextClick(String url)
         {
-            if(!url.matches("^((https?)\\:\\/\\/)?([a-z0-9]{1})((\\.[a-z0-9-])|([a-z0-9-]))*\\.([a-z]{2,6})(\\/?)$"))
-                mUrl = def;
-            mUrl += url;
+            mUrl = url;
+            if(!url.matches("^((https?)\\:\\/\\/)?([a-z0-9]{1})((\\.[a-z0-9-])|([a-z0-9-]))*\\.([a-z]{2,6})(\\/?)(\\/[0-9a-zA-Z\\._-]+)*$") && def != null)
+                mUrl = def + mUrl;
         }
 
         @Override
