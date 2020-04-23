@@ -32,10 +32,7 @@
         <item>Библиотека</item>
         <item>Электронные ресурсы</item>
         <item>Объявления</item>
-        <item>Образовательный стандарт</item>
+        <!--<item>Образовательный стандарт</item>-->
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="с">200dp</string>
 
 </resources>
