@@ -130,9 +130,9 @@ public class MenuFragment extends Fragment implements MyRecyclerViewAdapter.Item
             case 5:
                 now.navigate(R.id.electronicResourcesFragment, null);
                 break;
-            case 6:
+            /*case 6:
                 now.navigate(R.id.adsFragment, null);
-                break;
+                break;*/
         }
     }
 }
