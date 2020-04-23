@@ -29,6 +29,97 @@ public class apiEtis{
       this.session_id = session_id;
    }
 
+
+    //-----
+
+    public class StorageLocation{
+        public final String count;
+        public final String location;
+
+        StorageLocation(String count, String location) {
+            this.count = count;
+            this.location = location;
+        }
+    }
+
+    public class Book{
+        public final String title;
+        public final ArrayList<StorageLocation> storageLocations;
+
+        Book(String title,  ArrayList<StorageLocation> storageLocations) {
+            this.title = title;
+            this.storageLocations = storageLocations;
+        }
+    }
+
+    public class DisciplineLiterature{
+        public final String title;
+        public final ArrayList<Book> mandatoryLiterature;
+        public final ArrayList<Book> additionalLiterature;
+
+        DisciplineLiterature(String title, ArrayList<Book> mandatoryLiterature, ArrayList<Book> additionalLiterature) {
+            this.title = title;
+            this.mandatoryLiterature = mandatoryLiterature;
+            this.additionalLiterature = additionalLiterature;
+        }
+    }
+
+    public DisciplineLiterature[] getRecommendedLiterature(){
+        String server_response = null;
+        try {
+            server_response = getPage("https://student.psu.ru/pls/stu_cus_et/stu.library?p_mode=recommend");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(server_response != null) {
+            Document doc = Jsoup.parse(server_response);
+
+            Elements titles = doc.getElementsByClass("span9").get(0).getElementsByTag("h3");
+            Elements tables = doc.getElementsByClass("span9").get(0).getElementsByTag("table");
+
+            DisciplineLiterature[] resDisciplineLiterature = new DisciplineLiterature[titles.size()];
+            ArrayList<Book> tempMandatoryLiterature;
+            ArrayList<Book> tempAdditionalLiterature;
+            ArrayList<Book> nowLiterature = null;
+
+            for(int i=0; i<titles.size(); i++){
+                tempMandatoryLiterature = new ArrayList<Book>();
+                tempAdditionalLiterature = new ArrayList<Book>();
+
+                Elements rows = tables.get(i).getElementsByTag("tr");
+                for(int j=0; j<rows.size(); j++){
+                    Elements td = rows.get(j).getElementsByTag("td");
+                    if(td.size() == 3){
+                        System.out.println();
+                        ArrayList<StorageLocation> tempStorageLocations = new ArrayList<>();
+                        if(td.get(0).hasAttr("rowspan")){
+                            tempStorageLocations.add(new StorageLocation(td.get(1).text(), td.get(2).text()));
+                            j++;
+                            for(int x=1;x < Integer.parseInt(td.get(0).attr("rowspan")); x++, j++){
+                                Elements tds = rows.get(j).getElementsByTag("td");
+                                tempStorageLocations.add(new StorageLocation(td.get(0).text(), td.get(1).text()));
+                            }
+                            j--;
+                        }
+                        nowLiterature.add(new Book(td.get(0).text(), tempStorageLocations));
+                    }
+                    else {
+                        td = rows.get(j).getElementsByTag("th");
+                        if(td.size() == 1){
+                            if(td.get(0).text().equals("Обязательная"))
+                                nowLiterature = tempMandatoryLiterature;
+                            else //if(td.get(0).text().equals("Дополнительная"))
+                                nowLiterature = tempAdditionalLiterature;
+                        }
+                    }
+                }
+                resDisciplineLiterature[i] = new DisciplineLiterature(titles.get(i).text(), tempMandatoryLiterature, tempAdditionalLiterature);
+            }
+            return resDisciplineLiterature;
+        }
+        return null;
+    }
+
    //----------------
 
    public class UserInfo{

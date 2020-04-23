@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.menu.Fragments.LibraryFragments.RecommendedLiteratureFragment">
 
-    <TableLayout
+    <!--<TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/Toolbar">
@@ -68,5 +68,16 @@
 
         </TableRow>
 
-    </TableLayout>
+    </TableLayout>-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/tableRecommended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
 </FrameLayout>
