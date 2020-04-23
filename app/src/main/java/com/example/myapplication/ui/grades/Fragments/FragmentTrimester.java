@@ -87,12 +87,7 @@ public class FragmentTrimester extends Fragment {
                                 tvType.setText(cell.get(2).text().replace(" ", "\n"));
                                 if(row.attr("style").equals("color:red;"))
                                     tvType.setTextColor(getResources().getColor(R.color.colorRed));
-                                TextView tv12 = tr2.findViewById(R.id.typeWork);
-                                tv12.setText(cell.get(1).text());
-                                if(row.attr("style").equals("color:red;"))
-                                    tv12.setTextColor(getResources().getColor(R.color.colorRed));
-
-                                tv12 = tr2.findViewById(R.id.min);
+                                TextView tv12 = tr2.findViewById(R.id.min);
                                 tv12.setText(cell.get(4).text());
                                 if(row.attr("style").equals("color:red;"))
                                     tv12.setTextColor(getResources().getColor(R.color.colorRed));
